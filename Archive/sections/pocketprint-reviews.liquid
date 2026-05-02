@@ -1,0 +1,151 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-reviews pp-page" id="{{ section.settings.section_id }}">
+  <div class="pp-container">
+    <div class="pp-reviews-header">
+      <div data-pp-reveal>
+        <div class="pp-eyebrow">{{ section.settings.eyebrow }}</div>
+        <h2 class="pp-section-title">{{ section.settings.title | replace: '[i]', '<span class="pp-ital">' | replace: '[/i]', '</span>' }}</h2>
+      </div>
+      <div class="pp-reviews-stats" data-pp-reveal>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'stat' -%}
+            <div class="pp-stat-card" {{ block.shopify_attributes }}>
+              <div class="pp-stat-num">{{ block.settings.number }}</div>
+              <div class="pp-stat-label">{{ block.settings.label }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <div class="pp-tiktok-row">
+      {%- assign card_colors = 'pp-tt-bg-1,pp-tt-bg-2,pp-tt-bg-3,pp-tt-bg-4,pp-tt-bg-5,pp-tt-bg-6' | split: ',' -%}
+      {%- assign card_index = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'review_card' -%}
+          {%- assign bg_class = card_colors[card_index] -%}
+          {%- assign card_index = card_index | plus: 1 -%}
+          {%- if card_index >= 6 -%}{%- assign card_index = 0 -%}{%- endif -%}
+          <div class="pp-tiktok-card {{ bg_class }}" {{ block.shopify_attributes }}>
+            <div class="pp-tt-overlay">
+              <div class="pp-tt-top">
+                <div class="pp-tt-handle">
+                  <div class="pp-tt-avatar"></div>
+                  {{ block.settings.handle }}
+                </div>
+                <div class="pp-tt-views">▶ {{ block.settings.views }}</div>
+              </div>
+              <div>
+                <p class="pp-tt-quote">"{{ block.settings.quote }}"</p>
+                <div class="pp-tt-bottom">
+                  <span class="pp-tt-likes">♡ {{ block.settings.likes }}</span>
+                  <span>{{ block.settings.date }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PocketPrint — Reviews",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section anchor ID",
+      "default": "reviews"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "04 · Loved Online"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (use [i]...[/i] for italic)",
+      "default": "2.4M+ creators[br]can't put it [i]down.[/i]"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "4.9★"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "5,247 reviews"
+        }
+      ]
+    },
+    {
+      "type": "review_card",
+      "name": "Review Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "handle",
+          "label": "Handle",
+          "default": "@ellie.makes"
+        },
+        {
+          "type": "text",
+          "id": "views",
+          "label": "View count",
+          "default": "1.2M"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "This thing changed the way I journal. Genuinely obsessed."
+        },
+        {
+          "type": "text",
+          "id": "likes",
+          "label": "Like count",
+          "default": "89.2K"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "default": "Apr 12"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Reviews",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "4.9★", "label": "5,247 reviews" } },
+        { "type": "stat", "settings": { "number": "2.4M", "label": "TikTok views" } },
+        { "type": "stat", "settings": { "number": "98%", "label": "Recommend" } },
+        { "type": "review_card", "settings": { "handle": "@ellie.makes", "views": "1.2M", "quote": "This thing changed the way I journal. Genuinely obsessed.", "likes": "89.2K", "date": "Apr 12" } },
+        { "type": "review_card", "settings": { "handle": "@kai.studio", "views": "854K", "quote": "The build quality alone justifies the price. Tiny but premium.", "likes": "62.4K", "date": "Mar 28" } },
+        { "type": "review_card", "settings": { "handle": "@lemon.diary", "views": "2.1M", "quote": "My 8-year-old has not stopped printing. Cheaper than therapy.", "likes": "134K", "date": "Feb 9" } },
+        { "type": "review_card", "settings": { "handle": "@noor.creates", "views": "612K", "quote": "Worth every euro. The app is shockingly good for the price.", "likes": "41.8K", "date": "Jan 22" } },
+        { "type": "review_card", "settings": { "handle": "@design.dom", "views": "1.8M", "quote": "Legitimate Teenage Engineering energy at one-tenth the price.", "likes": "98.7K", "date": "Apr 03" } },
+        { "type": "review_card", "settings": { "handle": "@maja.notes", "views": "478K", "quote": "Bought one, then bought three more for my friends. It's that good.", "likes": "32.1K", "date": "Mar 15" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,130 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-uses pp-page">
+  <div class="pp-container">
+    <div data-pp-reveal>
+      <div class="pp-eyebrow">{{ section.settings.eyebrow }}</div>
+      <h2 class="pp-section-title">{{ section.settings.title | replace: '[i]', '<span class="pp-ital">' | replace: '[/i]', '</span>' }}</h2>
+    </div>
+
+    <div class="pp-uses-stack">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'use_band' -%}
+          <div class="pp-use-band" {{ block.shopify_attributes }} data-pp-reveal>
+            <div>
+              <div class="pp-use-tag">{{ block.settings.tag }}</div>
+              <h3 class="pp-use-title">{{ block.settings.title | replace: '[i]', '<span class="pp-ital">' | replace: '[/i]', '</span>' }}</h3>
+              <p class="pp-use-desc">{{ block.settings.description }}</p>
+            </div>
+            <div class="pp-use-visual">
+              <div class="pp-use-mock">
+                <div class="pp-use-mock-content">
+                  {%- case block.settings.mock_type -%}
+                    {%- when 'journal' -%}
+                      <div class="pp-use-mock-header">★ {{ 'now' | date: '%m.%d.%Y' }}</div>
+                      <div class="pp-use-mock-art-dots"></div>
+                      <div class="pp-use-mock-footer">memories.</div>
+                    {%- when 'study' -%}
+                      <div class="pp-use-mock-header">CHAPTER 04</div>
+                      <div class="pp-use-mock-lines">
+                        <span style="width:90%"></span>
+                        <span style="width:70%"></span>
+                        <span style="width:85%"></span>
+                        <span style="width:60%"></span>
+                        <span style="width:80%"></span>
+                      </div>
+                      <div class="pp-use-mock-footer">page 47.</div>
+                    {%- when 'list' -%}
+                      <div class="pp-use-mock-header">TO-DO</div>
+                      <div class="pp-use-mock-list">
+                        <div class="pp-use-mock-list-item"><span class="pp-use-mock-checkbox"></span>Coffee</div>
+                        <div class="pp-use-mock-list-item"><span class="pp-use-mock-checkbox"></span>Walk</div>
+                        <div class="pp-use-mock-list-item"><span class="pp-use-mock-checkbox"></span>Print</div>
+                      </div>
+                      <div class="pp-use-mock-footer">go.</div>
+                    {%- else -%}
+                      <div class="pp-use-mock-header">★ HELLO</div>
+                      <div style="display:flex;align-items:center;justify-content:center">
+                        <svg viewBox="0 0 100 100" style="width:60%"><path d="M50 80 Q20 60 20 40 Q20 25 35 25 Q45 25 50 35 Q55 25 65 25 Q80 25 80 40 Q80 60 50 80 Z" fill="currentColor"/></svg>
+                      </div>
+                      <div class="pp-use-mock-footer">made for u.</div>
+                  {%- endcase -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PocketPrint — Use Cases",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "07 · Use Cases"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (use [i]...[/i] for italic)",
+      "default": "Made for the [i]things[/i] you actually do."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "use_band",
+      "name": "Use Case Band",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "default": "Journals & Memories"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title (use [i]...[/i] for italic)",
+          "default": "Print the moments you'd [i]otherwise scroll past.[/i]"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Photos. Texts. Tickets. Letters from someone who matters."
+        },
+        {
+          "type": "select",
+          "id": "mock_type",
+          "label": "Mock visual type",
+          "options": [
+            { "value": "journal", "label": "Journal / dot art" },
+            { "value": "study", "label": "Study / lines" },
+            { "value": "list", "label": "To-do list" },
+            { "value": "heart", "label": "Heart / kids" }
+          ],
+          "default": "journal"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Use Cases",
+      "blocks": [
+        { "type": "use_band", "settings": { "tag": "Journals & Memories", "title": "Print the moments you'd [i]otherwise scroll past.[/i]", "description": "Photos. Texts. Tickets. Letters from someone who matters. Hold them. Stick them. Keep them.", "mock_type": "journal" } },
+        { "type": "use_band", "settings": { "tag": "Studying & Notes", "title": "Flashcards. Mind-maps. [i]In seconds.[/i]", "description": "Print PDFs, key passages, vocab. Stick them in your textbook. Revise without the screen.", "mock_type": "study" } },
+        { "type": "use_band", "settings": { "tag": "Lists & Reminders", "title": "Grocery lists. Habit trackers. [i]Tiny manifestos.[/i]", "description": "Whatever you'd normally lose in your Notes app — print it. Stick it. Cross it off in pen.", "mock_type": "list" } },
+        { "type": "use_band", "settings": { "tag": "Kids & Creatives", "title": "An infinite roll of [i]good ideas.[/i]", "description": "Drawings. Stickers. Tiny posters. Birthday tags. The kind of magic that doesn't expire.", "mock_type": "heart" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,58 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-final-cta pp-page">
+  <div class="pp-container">
+    <h2 class="pp-final-cta-title" data-pp-reveal>
+      {{ section.settings.title_line_1 }}<br>
+      <span class="pp-ital">{{ section.settings.title_line_2 }}</span>
+    </h2>
+    <p class="pp-final-cta-sub" data-pp-reveal>{{ section.settings.subtitle }}</p>
+    <a href="{{ section.settings.cta_url }}" class="pp-btn pp-btn-primary" data-pp-reveal>
+      <span>{{ section.settings.cta_label }}</span>
+      <span class="pp-btn-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PocketPrint — Final CTA",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_line_1",
+      "label": "Title line 1",
+      "default": "Print"
+    },
+    {
+      "type": "text",
+      "id": "title_line_2",
+      "label": "Title line 2 (italic)",
+      "default": "today."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Free shipping. 30-day trial. 2-year warranty. There's nothing to lose, and there's something tangible to gain."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA button label",
+      "default": "Get PocketPrint"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA button URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Final CTA"
+    }
+  ]
+}
+{% endschema %}

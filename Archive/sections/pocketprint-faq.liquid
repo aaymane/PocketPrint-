@@ -1,0 +1,111 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-faq pp-page" id="{{ section.settings.section_id }}">
+  <div class="pp-container">
+    <div class="pp-faq-grid">
+      <div class="pp-faq-side" data-pp-reveal>
+        <div class="pp-eyebrow">{{ section.settings.eyebrow }}</div>
+        <h2 class="pp-section-title">{{ section.settings.title | replace: '[i]', '<span class="pp-ital">' | replace: '[/i]', '</span>' }}</h2>
+        <p>{{ section.settings.support_text }}</p>
+        {%- if section.settings.support_url != blank -%}
+          <a href="{{ section.settings.support_url }}" class="pp-btn pp-btn-ghost">
+            <span>{{ section.settings.support_label | default: 'Contact Support' }}</span>
+            <span class="pp-btn-arrow">→</span>
+          </a>
+        {%- endif -%}
+      </div>
+
+      <div class="pp-faq-list" data-pp-reveal>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'faq_item' -%}
+            <div class="pp-faq-item{% if forloop.first %} pp-open{% endif %}" {{ block.shopify_attributes }}>
+              <div class="pp-faq-q">
+                <span>{{ block.settings.question }}</span>
+                <span class="pp-faq-toggle"></span>
+              </div>
+              <div class="pp-faq-a">{{ block.settings.answer }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PocketPrint — FAQ",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section anchor ID",
+      "default": "faq"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "09 · FAQ"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (use [i]...[/i] for italic)",
+      "default": "Real [i]answers.[/i]"
+    },
+    {
+      "type": "text",
+      "id": "support_text",
+      "label": "Support text",
+      "default": "Still curious? Our team replies within 4 hours."
+    },
+    {
+      "type": "url",
+      "id": "support_url",
+      "label": "Support URL"
+    },
+    {
+      "type": "text",
+      "id": "support_label",
+      "label": "Support button label",
+      "default": "Contact Support"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Is the printing really inkless?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Yes. PocketPrint uses thermal printing technology — heat activates the special paper to create the image. No cartridges, no refills, no mess. Ever."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — FAQ",
+      "blocks": [
+        { "type": "faq_item", "settings": { "question": "Is the printing really inkless?", "answer": "Yes. PocketPrint uses thermal printing technology — heat activates the special paper to create the image. No cartridges, no refills, no mess. Ever." } },
+        { "type": "faq_item", "settings": { "question": "Will it work with my phone?", "answer": "If your phone runs iOS 14+ or Android 9+, you're set. The free PocketPrint app handles everything via Bluetooth 5.0 — no Wi-Fi or accounts required." } },
+        { "type": "faq_item", "settings": { "question": "How long does the paper last?", "answer": "Our premium thermal rolls last 5+ years when stored in normal conditions, and 10+ years for our archival paper add-on. Keep them out of direct sunlight for best results." } },
+        { "type": "faq_item", "settings": { "question": "Where do you ship?", "answer": "Worldwide. Shipping is free on every order. Most countries see delivery within 3–5 business days — every package is tracked and insured." } },
+        { "type": "faq_item", "settings": { "question": "What's the print resolution?", "answer": "203 DPI — sharp enough for photos, dense enough for text, fast enough that you'll forget you're waiting." } },
+        { "type": "faq_item", "settings": { "question": "Can I print in color?", "answer": "Standard rolls print in monochrome (which honestly looks gorgeous). For color, we sell pink, blue, and gold-tone thermal rolls in the Creator Pack." } },
+        { "type": "faq_item", "settings": { "question": "What if I don't love it?", "answer": "Send it back within 30 days for a full refund. No restocking fees, no return shipping costs. We're confident it'll stay — but you're never locked in." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

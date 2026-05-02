@@ -1,0 +1,137 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-showcase pp-page">
+  <div class="pp-container">
+    <div class="pp-showcase-header">
+      <div data-pp-reveal>
+        <div class="pp-eyebrow">{{ section.settings.eyebrow }}</div>
+        <h2 class="pp-section-title">{{ section.settings.title | replace: '[i]', '<span class="pp-ital">' | replace: '[/i]', '</span>' }}</h2>
+      </div>
+      <p class="pp-showcase-intro" data-pp-reveal>{{ section.settings.intro }}</p>
+    </div>
+
+    <div class="pp-feature-grid">
+
+      <!-- Card 1 — Print -->
+      <div class="pp-feature-card pp-fc-1" data-pp-reveal>
+        <div class="pp-fc-num">01 / Print</div>
+        <h3 class="pp-fc-title">From phone to paper in <span class="pp-ital">seconds.</span></h3>
+        <p class="pp-fc-desc">Thermal printing means no ink, no cartridges, no maintenance. Just open the app, pick a photo, hit print. Done.</p>
+        <div class="pp-print-preview">
+          <div class="pp-pp-header"><span>PP-MINI</span><span>2026</span></div>
+          <div class="pp-pp-art"></div>
+          <div class="pp-pp-text">
+            "The best memories<br>
+            don't live online."<br>
+            — sarah · paris
+          </div>
+          <div class="pp-pp-stub">★ ★ ★ ★ ★</div>
+        </div>
+      </div>
+
+      <!-- Card 2 — Wireless -->
+      <div class="pp-feature-card pp-fc-2" data-pp-reveal>
+        <div class="pp-fc-num">02 / Wireless</div>
+        <h3 class="pp-fc-title">Bluetooth 5.0. Pairs <span class="pp-ital">instantly.</span></h3>
+        <p class="pp-fc-desc">Connects to iOS and Android the moment you open the app. Zero setup. Zero friction.</p>
+        <div class="pp-bt-vis">
+          <svg viewBox="0 0 140 140">
+            <g class="pp-bt-ring-anim">
+              <circle class="pp-bt-r1" cx="70" cy="70" r="60"/>
+              <circle class="pp-bt-r2" cx="70" cy="70" r="60"/>
+              <circle class="pp-bt-r3" cx="70" cy="70" r="60"/>
+            </g>
+            <circle cx="70" cy="70" r="22" fill="#ff8fb1"/>
+            <path d="M 70 56 L 70 84 M 70 56 L 78 64 L 64 76 L 78 88 L 70 96" stroke="#0a0a0c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Card 3 — Battery -->
+      <div class="pp-feature-card pp-fc-3" data-pp-reveal>
+        <div class="pp-fc-num">03 / Battery</div>
+        <h3 class="pp-fc-title">200 prints per charge.</h3>
+        <p class="pp-fc-desc">USB-C. Charges in 90 minutes.</p>
+        <div class="pp-battery-vis">
+          <div class="pp-battery-bar"><div class="pp-battery-fill"></div></div>
+          <div class="pp-battery-label">
+            <span><strong>84%</strong> · 168 prints left</span>
+            <span>Last charged · 6h ago</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 — Speed -->
+      <div class="pp-feature-card pp-fc-4" data-pp-reveal>
+        <div class="pp-fc-num">04 / Speed</div>
+        <h3 class="pp-fc-title">Print in 6 seconds flat.</h3>
+        <p class="pp-fc-desc">203 DPI thermal output. Crisp, dense, fast.</p>
+        <div class="pp-speed-vis" id="pp-speed-vis"></div>
+      </div>
+
+      <!-- Card 5 — App -->
+      <div class="pp-feature-card pp-fc-5" data-pp-reveal>
+        <div class="pp-fc-num">05 / Software</div>
+        <h3 class="pp-fc-title">App that feels like <span class="pp-ital">paper.</span></h3>
+        <p class="pp-fc-desc">Filters. Stickers. Templates. Journals.</p>
+        <div class="pp-app-mock">
+          <div class="pp-app-bar"></div>
+          <div class="pp-app-bar2"></div>
+          <div class="pp-app-img"><div class="pp-app-img-circle"></div></div>
+          <div class="pp-app-buttons"><div></div><div></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    const vis = document.getElementById('pp-speed-vis');
+    if (!vis) return;
+    const rows = 8, cols = 16;
+    for (let i = 0; i < rows * cols; i++) vis.appendChild(document.createElement('div'));
+    const cells = vis.children;
+    let frame = 0;
+    setInterval(() => {
+      frame++;
+      for (let i = 0; i < cells.length; i++) {
+        const wave = Math.sin(((i % cols) + frame * 0.5) * 0.5) * 0.5 + 0.5;
+        cells[i].classList.toggle('pp-on', wave > 0.6);
+      }
+    }, 100);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "PocketPrint — Feature Showcase",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "02 · Engineering"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (use [i]...[/i] for italic)",
+      "default": "Designed for [i]life[/i] in motion."
+    },
+    {
+      "type": "text",
+      "id": "intro",
+      "label": "Intro paragraph",
+      "default": "Every component refined to disappear into the moment. So all you notice is what comes out."
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Feature Showcase"
+    }
+  ]
+}
+{% endschema %}

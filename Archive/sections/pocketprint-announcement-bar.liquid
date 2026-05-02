@@ -1,0 +1,50 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<div class="pp-announce">
+  <div class="pp-announce-track">
+    {%- for i in (1..2) -%}
+      <span>{{ section.settings.message_1 }}</span>
+      <span>{{ section.settings.message_2 }}</span>
+      <span>{{ section.settings.message_3 }}</span>
+      <span>{{ section.settings.message_4 }}</span>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PocketPrint — Announcement Bar",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "message_1",
+      "label": "Message 1",
+      "default": "Free Express Shipping Worldwide"
+    },
+    {
+      "type": "text",
+      "id": "message_2",
+      "label": "Message 2",
+      "default": "2-Year Warranty Included"
+    },
+    {
+      "type": "text",
+      "id": "message_3",
+      "label": "Message 3",
+      "default": "30-Day Risk-Free Trial"
+    },
+    {
+      "type": "text",
+      "id": "message_4",
+      "label": "Message 4",
+      "default": "5,000+ Reviews · 4.9 Stars"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Announcement Bar"
+    }
+  ]
+}
+{% endschema %}

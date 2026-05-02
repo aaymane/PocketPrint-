@@ -1,0 +1,231 @@
+{
+  "sections": {
+    "announcement-bar": {
+      "type": "pocketprint-announcement-bar",
+      "settings": {
+        "message_1": "Free Express Shipping Worldwide",
+        "message_2": "2-Year Warranty Included",
+        "message_3": "30-Day Risk-Free Trial",
+        "message_4": "5,000+ Reviews · 4.9 Stars"
+      }
+    },
+    "hero": {
+      "type": "pocketprint-hero",
+      "settings": {
+        "eyebrow_tag": "New · 2026 Edition",
+        "title_line_1": "Print Moments.",
+        "title_line_2": "Anywhere.",
+        "subtitle": "A pocket-sized thermal printer that turns thoughts, photos, lists, and ideas — into something you can hold. Wireless. Inkless. Instant.",
+        "cta_primary_label": "Shop PocketPrint",
+        "cta_primary_url": "#product",
+        "cta_secondary_label": "How It Works",
+        "cta_secondary_url": "#how",
+        "meta_model": "PP-MINI / 2026",
+        "meta_status": "In Stock · Ships Today",
+        "meta_colors": "Blush · Mint · Sky · Onyx"
+      }
+    },
+    "ticker": {
+      "type": "pocketprint-ticker",
+      "settings": {
+        "word_1": "Print",
+        "word_1_alt": "Anything",
+        "word_2": "Pocket",
+        "word_2_alt": "Sized",
+        "word_3": "Wireless",
+        "word_3_alt": "Always"
+      }
+    },
+    "manifesto": {
+      "type": "pocketprint-manifesto",
+      "settings": {
+        "body": "<p>We live in <em>infinite scroll</em>. Every photo, idea, and memory — trapped behind a screen.</p><p><strong>PocketPrint changes that.</strong> A printer that fits in your hand. Connects in seconds. And brings the things you love back into the physical world — <em>where they belong.</em></p>"
+      },
+      "blocks": {
+        "row-1": { "type": "meta_row", "settings": { "label": "Section", "value": "01 / Manifesto" } },
+        "row-2": { "type": "meta_row", "settings": { "label": "Year", "value": "2026" } },
+        "row-3": { "type": "meta_row", "settings": { "label": "Origin", "value": "Designed worldwide" } },
+        "row-4": { "type": "meta_row", "settings": { "label": "Concept", "value": "Tangible memory" } },
+        "row-5": { "type": "meta_row", "settings": { "label": "Printing", "value": "Inkless thermal" } }
+      },
+      "block_order": ["row-1", "row-2", "row-3", "row-4", "row-5"]
+    },
+    "feature-showcase": {
+      "type": "pocketprint-feature-showcase",
+      "settings": {
+        "eyebrow": "02 · Engineering",
+        "title": "Designed for [i]life[/i] in motion.",
+        "intro": "Every component refined to disappear into the moment. So all you notice is what comes out."
+      }
+    },
+    "product-buy": {
+      "type": "pocketprint-product-buy",
+      "settings": {
+        "section_id": "product",
+        "rating_text": "4.9 · 5,247 reviews",
+        "shipping_label": "Free express shipping",
+        "shipping_sub": "Delivers in 3–5 business days",
+        "atc_label": "Add to Cart",
+        "popular_bundle": "Starter Kit",
+        "colorway_count": "4"
+      }
+    },
+    "how-it-works": {
+      "type": "pocketprint-how-it-works",
+      "settings": {
+        "section_id": "how",
+        "eyebrow": "03 · Process",
+        "title": "From idea to [i]paper[/i] in three taps."
+      },
+      "blocks": {
+        "step-1": { "type": "step", "settings": { "title": "Pair", "description": "Open the PocketPrint app and connect via Bluetooth. Setup takes less than 8 seconds — no accounts, no friction.", "meta": "Bluetooth 5.0" } },
+        "step-2": { "type": "step", "settings": { "title": "Pick", "description": "Choose a photo, write a note, scan a doc, or grab a meme. Apply filters, frames, retro effects — whatever fits the mood.", "meta": "iOS · Android" } },
+        "step-3": { "type": "step", "settings": { "title": "Print", "description": "Hit print. In 6 seconds, you're holding a tangible piece of your day. No ink. No mess. Just paper, in your hand.", "meta": "6 seconds" } }
+      },
+      "block_order": ["step-1", "step-2", "step-3"]
+    },
+    "reviews": {
+      "type": "pocketprint-reviews",
+      "settings": {
+        "section_id": "reviews",
+        "eyebrow": "04 · Loved Online",
+        "title": "2.4M+ creators can't put it [i]down.[/i]"
+      },
+      "blocks": {
+        "stat-1": { "type": "stat", "settings": { "number": "4.9★", "label": "5,247 reviews" } },
+        "stat-2": { "type": "stat", "settings": { "number": "2.4M", "label": "TikTok views" } },
+        "stat-3": { "type": "stat", "settings": { "number": "98%", "label": "Recommend" } },
+        "card-1": { "type": "review_card", "settings": { "handle": "@ellie.makes", "views": "1.2M", "quote": "This thing changed the way I journal. Genuinely obsessed.", "likes": "89.2K", "date": "Apr 12" } },
+        "card-2": { "type": "review_card", "settings": { "handle": "@kai.studio", "views": "854K", "quote": "The build quality alone justifies the price. Tiny but premium.", "likes": "62.4K", "date": "Mar 28" } },
+        "card-3": { "type": "review_card", "settings": { "handle": "@lemon.diary", "views": "2.1M", "quote": "My 8-year-old has not stopped printing. Cheaper than therapy.", "likes": "134K", "date": "Feb 9" } },
+        "card-4": { "type": "review_card", "settings": { "handle": "@noor.creates", "views": "612K", "quote": "Worth every euro. The app is shockingly good for the price.", "likes": "41.8K", "date": "Jan 22" } },
+        "card-5": { "type": "review_card", "settings": { "handle": "@design.dom", "views": "1.8M", "quote": "Legitimate Teenage Engineering energy at one-tenth the price.", "likes": "98.7K", "date": "Apr 03" } },
+        "card-6": { "type": "review_card", "settings": { "handle": "@maja.notes", "views": "478K", "quote": "Bought one, then bought three more for my friends. It's that good.", "likes": "32.1K", "date": "Mar 15" } }
+      },
+      "block_order": ["stat-1", "stat-2", "stat-3", "card-1", "card-2", "card-3", "card-4", "card-5", "card-6"]
+    },
+    "specs": {
+      "type": "pocketprint-specs",
+      "settings": {
+        "section_id": "specs",
+        "eyebrow": "05 · Inside",
+        "title": "Built like an [i]heirloom.[/i]",
+        "description": "Every spec was chosen to feel premium in a way most printers don't bother with. Aluminum body. Soft-touch finish. Magnetic cover. The details show up in the hand.",
+        "annotation_1": "Magnetic Cover",
+        "annotation_2": "USB-C Port"
+      },
+      "blocks": {
+        "spec-1": { "type": "spec_row", "settings": { "label": "Print resolution", "value": "203 DPI · Thermal" } },
+        "spec-2": { "type": "spec_row", "settings": { "label": "Connection", "value": "Bluetooth 5.0 LE" } },
+        "spec-3": { "type": "spec_row", "settings": { "label": "Battery life", "value": "200 prints / charge" } },
+        "spec-4": { "type": "spec_row", "settings": { "label": "Charging", "value": "USB-C · 90 min" } },
+        "spec-5": { "type": "spec_row", "settings": { "label": "Paper width", "value": "57mm thermal roll" } },
+        "spec-6": { "type": "spec_row", "settings": { "label": "Dimensions", "value": "87 × 84 × 45 mm" } },
+        "spec-7": { "type": "spec_row", "settings": { "label": "Weight", "value": "180 g" } },
+        "spec-8": { "type": "spec_row", "settings": { "label": "Compatibility", "value": "iOS 14+ · Android 9+" } }
+      },
+      "block_order": ["spec-1", "spec-2", "spec-3", "spec-4", "spec-5", "spec-6", "spec-7", "spec-8"]
+    },
+    "comparison": {
+      "type": "pocketprint-comparison",
+      "settings": {
+        "eyebrow": "06 · Why PocketPrint",
+        "title": "No comparison, [i]honestly.[/i]",
+        "brand_col_label": "PocketPrint Mini",
+        "other_col_label": "Other Mini Printers"
+      },
+      "blocks": {
+        "row-1": { "type": "comparison_row", "settings": { "feature": "Pocket-sized form factor", "brand_has": true, "other_has": true } },
+        "row-2": { "type": "comparison_row", "settings": { "feature": "Premium build (aluminum + soft-touch)", "brand_has": true, "other_has": false } },
+        "row-3": { "type": "comparison_row", "settings": { "feature": "200 prints per charge", "brand_has": true, "other_has": false } },
+        "row-4": { "type": "comparison_row", "settings": { "feature": "USB-C charging", "brand_has": true, "other_has": false } },
+        "row-5": { "type": "comparison_row", "settings": { "feature": "Native iOS + Android app", "brand_has": true, "other_has": true } },
+        "row-6": { "type": "comparison_row", "settings": { "feature": "2-year warranty", "brand_has": true, "other_has": false } },
+        "row-7": { "type": "comparison_row", "settings": { "feature": "30-day risk-free trial", "brand_has": true, "other_has": false } }
+      },
+      "block_order": ["row-1", "row-2", "row-3", "row-4", "row-5", "row-6", "row-7"]
+    },
+    "use-cases": {
+      "type": "pocketprint-use-cases",
+      "settings": {
+        "eyebrow": "07 · Use Cases",
+        "title": "Made for the [i]things[/i] you actually do."
+      },
+      "blocks": {
+        "band-1": { "type": "use_band", "settings": { "tag": "Journals & Memories", "title": "Print the moments you'd [i]otherwise scroll past.[/i]", "description": "Photos. Texts. Tickets. Letters from someone who matters. Hold them. Stick them. Keep them.", "mock_type": "journal" } },
+        "band-2": { "type": "use_band", "settings": { "tag": "Studying & Notes", "title": "Flashcards. Mind-maps. [i]In seconds.[/i]", "description": "Print PDFs, key passages, vocab. Stick them in your textbook. Revise without the screen.", "mock_type": "study" } },
+        "band-3": { "type": "use_band", "settings": { "tag": "Lists & Reminders", "title": "Grocery lists. Habit trackers. [i]Tiny manifestos.[/i]", "description": "Whatever you'd normally lose in your Notes app — print it. Stick it. Cross it off in pen.", "mock_type": "list" } },
+        "band-4": { "type": "use_band", "settings": { "tag": "Kids & Creatives", "title": "An infinite roll of [i]good ideas.[/i]", "description": "Drawings. Stickers. Tiny posters. Birthday tags. The kind of magic that doesn't expire.", "mock_type": "heart" } }
+      },
+      "block_order": ["band-1", "band-2", "band-3", "band-4"]
+    },
+    "trust": {
+      "type": "pocketprint-trust",
+      "settings": {
+        "eyebrow": "08 · The Promise",
+        "title": "Buy with [i]zero[/i] risk."
+      },
+      "blocks": {
+        "card-1": { "type": "trust_card", "settings": { "icon": "shipping", "title": "Free Express Shipping", "description": "Orders placed before 2pm ship the same day. Tracked, insured, and delivered to your door in 3–5 business days worldwide.", "meta": "Worldwide · Tracked · Free" } },
+        "card-2": { "type": "trust_card", "settings": { "icon": "shield", "title": "30-Day Risk-Free Trial", "description": "Live with it for a month. Print everything. If it doesn't earn its place on your desk, send it back. No questions, no fees.", "meta": "Full refund · 30 days" } },
+        "card-3": { "type": "trust_card", "settings": { "icon": "clock", "title": "2-Year Warranty", "description": "Covered, end-to-end. If something goes wrong with the hardware in two years — replacement, on us. Genuine human support included.", "meta": "Hardware · 24 months" } }
+      },
+      "block_order": ["card-1", "card-2", "card-3"]
+    },
+    "faq": {
+      "type": "pocketprint-faq",
+      "settings": {
+        "section_id": "faq",
+        "eyebrow": "09 · FAQ",
+        "title": "Real [i]answers.[/i]",
+        "support_text": "Still curious? Our team replies within 4 hours.",
+        "support_label": "Contact Support"
+      },
+      "blocks": {
+        "faq-1": { "type": "faq_item", "settings": { "question": "Is the printing really inkless?", "answer": "Yes. PocketPrint uses thermal printing technology — heat activates the special paper to create the image. No cartridges, no refills, no mess. Ever." } },
+        "faq-2": { "type": "faq_item", "settings": { "question": "Will it work with my phone?", "answer": "If your phone runs iOS 14+ or Android 9+, you're set. The free PocketPrint app handles everything via Bluetooth 5.0 — no Wi-Fi or accounts required." } },
+        "faq-3": { "type": "faq_item", "settings": { "question": "How long does the paper last?", "answer": "Our premium thermal rolls last 5+ years when stored in normal conditions, and 10+ years for our archival paper add-on. Keep them out of direct sunlight for best results." } },
+        "faq-4": { "type": "faq_item", "settings": { "question": "Where do you ship?", "answer": "Worldwide. Shipping is free on every order. Most countries see delivery within 3–5 business days — every package is tracked and insured." } },
+        "faq-5": { "type": "faq_item", "settings": { "question": "What's the print resolution?", "answer": "203 DPI — sharp enough for photos, dense enough for text, fast enough that you'll forget you're waiting." } },
+        "faq-6": { "type": "faq_item", "settings": { "question": "Can I print in color?", "answer": "Standard rolls print in monochrome (which honestly looks gorgeous). For color, we sell pink, blue, and gold-tone thermal rolls in the Creator Pack." } },
+        "faq-7": { "type": "faq_item", "settings": { "question": "What if I don't love it?", "answer": "Send it back within 30 days for a full refund. No restocking fees, no return shipping costs. We're confident it'll stay — but you're never locked in." } }
+      },
+      "block_order": ["faq-1", "faq-2", "faq-3", "faq-4", "faq-5", "faq-6", "faq-7"]
+    },
+    "final-cta": {
+      "type": "pocketprint-final-cta",
+      "settings": {
+        "title_line_1": "Print",
+        "title_line_2": "today.",
+        "subtitle": "Free shipping. 30-day trial. 2-year warranty. There's nothing to lose, and there's something tangible to gain.",
+        "cta_label": "Get PocketPrint",
+        "cta_url": "#product"
+      }
+    },
+    "sticky-cta": {
+      "type": "pocketprint-sticky-cta",
+      "settings": {
+        "product_name": "PocketPrint Mini",
+        "price_display": "€39.90",
+        "button_label": "Add"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "hero",
+    "ticker",
+    "manifesto",
+    "feature-showcase",
+    "product-buy",
+    "how-it-works",
+    "reviews",
+    "specs",
+    "comparison",
+    "use-cases",
+    "trust",
+    "faq",
+    "final-cta",
+    "sticky-cta"
+  ]
+}

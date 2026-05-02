@@ -1,0 +1,100 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-trust-block pp-page">
+  <div class="pp-container">
+    <div style="margin-bottom:60px" data-pp-reveal>
+      <div class="pp-eyebrow">{{ section.settings.eyebrow }}</div>
+      <h2 class="pp-section-title">{{ section.settings.title | replace: '[i]', '<span class="pp-ital">' | replace: '[/i]', '</span>' }}</h2>
+    </div>
+    <div class="pp-trust-grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'trust_card' -%}
+          <div class="pp-trust-card" {{ block.shopify_attributes }} data-pp-reveal>
+            {%- case block.settings.icon -%}
+              {%- when 'shipping' -%}
+                <svg viewBox="0 0 24 24"><path d="M3 7h18l-2 11H5L3 7z" stroke-linejoin="round"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
+              {%- when 'shield' -%}
+                <svg viewBox="0 0 24 24"><path d="M12 2L4 6v6c0 5 3.4 9.5 8 10 4.6-.5 8-5 8-10V6l-8-4z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4"/></svg>
+              {%- when 'clock' -%}
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            {%- endcase -%}
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.description }}</p>
+            <div class="pp-trust-card-meta">{{ block.settings.meta }}</div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PocketPrint — Trust",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "08 · The Promise"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (use [i]...[/i] for italic)",
+      "default": "Buy with [i]zero[/i] risk."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "trust_card",
+      "name": "Trust Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "shipping", "label": "Shipping bag" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "clock", "label": "Clock" }
+          ],
+          "default": "shipping"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Free Express Shipping"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Orders placed before 2pm ship the same day."
+        },
+        {
+          "type": "text",
+          "id": "meta",
+          "label": "Meta label",
+          "default": "Worldwide · Tracked · Free"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Trust",
+      "blocks": [
+        { "type": "trust_card", "settings": { "icon": "shipping", "title": "Free Express Shipping", "description": "Orders placed before 2pm ship the same day. Tracked, insured, and delivered to your door in 3–5 business days worldwide.", "meta": "Worldwide · Tracked · Free" } },
+        { "type": "trust_card", "settings": { "icon": "shield", "title": "30-Day Risk-Free Trial", "description": "Live with it for a month. Print everything. If it doesn't earn its place on your desk, send it back. No questions, no fees.", "meta": "Full refund · 30 days" } },
+        { "type": "trust_card", "settings": { "icon": "clock", "title": "2-Year Warranty", "description": "Covered, end-to-end. If something goes wrong with the hardware in two years — replacement, on us. Genuine human support included.", "meta": "Hardware · 24 months" } }
+      ]
+    }
+  ],
+  "max_blocks": 3
+}
+{% endschema %}

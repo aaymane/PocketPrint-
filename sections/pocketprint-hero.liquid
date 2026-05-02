@@ -1,0 +1,137 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-hero pp-page">
+  <div class="pp-hero-bg"></div>
+  <div class="pp-hero-grid"></div>
+
+  <div class="pp-hero-content">
+    <div class="pp-hero-tag" data-pp-reveal>
+      <span class="pp-hero-tag-pulse"></span>
+      <span>{{ section.settings.eyebrow_tag }}</span>
+    </div>
+
+    <h1 class="pp-hero-title" data-pp-reveal>
+      {{ section.settings.title_line_1 }}<br>
+      <span class="pp-ital">{{ section.settings.title_line_2 }}</span>
+    </h1>
+
+    <p class="pp-hero-sub" data-pp-reveal>{{ section.settings.subtitle }}</p>
+
+    <div class="pp-hero-cta-row" data-pp-reveal>
+      <a href="{{ section.settings.cta_primary_url }}" class="pp-btn pp-btn-primary">
+        <span>{{ section.settings.cta_primary_label }}</span>
+        <span class="pp-btn-arrow">→</span>
+      </a>
+      <a href="{{ section.settings.cta_secondary_url }}" class="pp-btn pp-btn-ghost">
+        <span>{{ section.settings.cta_secondary_label }}</span>
+      </a>
+    </div>
+
+    <div class="pp-hero-product" data-pp-reveal>
+      <div class="pp-hero-ring"></div>
+      {%- render 'pocketprint-product-svg', svg_id: 'pp-hero-svg' -%}
+    </div>
+
+    <div class="pp-scroll-hint">
+      <span>Scroll</span>
+      <span class="pp-scroll-line"></span>
+    </div>
+  </div>
+
+  <div class="pp-hero-meta">
+    <div class="pp-hero-meta-block">
+      <span class="pp-hero-meta-label">Model</span>
+      <span class="pp-hero-meta-val">{{ section.settings.meta_model }}</span>
+    </div>
+    <div class="pp-hero-meta-block">
+      <span class="pp-hero-meta-label">Status</span>
+      <span class="pp-hero-meta-val">{{ section.settings.meta_status }}</span>
+    </div>
+    <div class="pp-hero-meta-block" style="text-align:right">
+      <span class="pp-hero-meta-label">Color</span>
+      <span class="pp-hero-meta-val">{{ section.settings.meta_colors }}</span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PocketPrint — Hero",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow_tag",
+      "label": "Eyebrow tag",
+      "default": "New · 2026 Edition"
+    },
+    {
+      "type": "text",
+      "id": "title_line_1",
+      "label": "Title line 1",
+      "default": "Print Moments."
+    },
+    {
+      "type": "text",
+      "id": "title_line_2",
+      "label": "Title line 2 (italic)",
+      "default": "Anywhere."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "A pocket-sized thermal printer that turns thoughts, photos, lists, and ideas — into something you can hold. Wireless. Inkless. Instant."
+    },
+    {
+      "type": "text",
+      "id": "cta_primary_label",
+      "label": "Primary CTA label",
+      "default": "Shop PocketPrint"
+    },
+    {
+      "type": "url",
+      "id": "cta_primary_url",
+      "label": "Primary CTA URL"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_label",
+      "label": "Secondary CTA label",
+      "default": "How It Works"
+    },
+    {
+      "type": "url",
+      "id": "cta_secondary_url",
+      "label": "Secondary CTA URL"
+    },
+    {
+      "type": "header",
+      "content": "Meta strip"
+    },
+    {
+      "type": "text",
+      "id": "meta_model",
+      "label": "Model",
+      "default": "PP-MINI / 2026"
+    },
+    {
+      "type": "text",
+      "id": "meta_status",
+      "label": "Status",
+      "default": "In Stock · Ships Today"
+    },
+    {
+      "type": "text",
+      "id": "meta_colors",
+      "label": "Colors",
+      "default": "Blush · Mint · Sky · Onyx"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Hero"
+    }
+  ]
+}
+{% endschema %}

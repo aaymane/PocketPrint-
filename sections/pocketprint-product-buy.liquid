@@ -1,0 +1,285 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign current_product = section.settings.product | default: product
+  assign first_variant = current_product.selected_or_first_available_variant
+-%}
+
+<script>
+  window.ppVariants = {{ current_product.variants | json }};
+  window.ppMoneyFormat = '{{ shop.currency_symbol }}';
+  window.ppSelectedVariantId = {{ first_variant.id | json }};
+</script>
+
+<section class="pp-buy-section pp-page" id="{{ section.settings.section_id }}" data-pp-section>
+  <div class="pp-container">
+    <div class="pp-buy-grid">
+
+      <!-- Product visual -->
+      <div class="pp-buy-visual" data-pp-reveal>
+        <div class="pp-buy-visual-inner">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="pp-buy-svg">
+            <defs>
+              <linearGradient id="pp-bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffd4e0"/>
+                <stop offset="100%" stop-color="#ff8fb1"/>
+              </linearGradient>
+              <linearGradient id="pp-centerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffc8d8"/>
+                <stop offset="100%" stop-color="#ff9abb"/>
+              </linearGradient>
+            </defs>
+            <rect x="60" y="60" width="280" height="280" rx="40" fill="url(#pp-bodyGrad)"/>
+            <rect x="338" y="180" width="6" height="40" rx="3" fill="#e85a85" opacity=".6"/>
+            <circle cx="200" cy="200" r="115" fill="rgba(255,255,255,.6)"/>
+            <circle cx="200" cy="200" r="92" fill="url(#pp-centerGrad)"/>
+            <path d="M 165 115 Q 165 100, 178 100 Q 188 100, 188 118 Z" fill="url(#pp-centerGrad)"/>
+            <path d="M 235 115 Q 235 100, 222 100 Q 212 100, 212 118 Z" fill="url(#pp-centerGrad)"/>
+            <g transform="translate(200,210)">
+              <circle cx="0" cy="-4" r="6" fill="#fff" opacity=".7"/>
+              <path d="M 0 -2 L 0 6 M 0 6 L -8 14 M 0 6 L 8 14" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8"/>
+            </g>
+          </svg>
+        </div>
+        <div class="pp-buy-color-strip">
+          <span>{{ section.settings.colorway_count | default: '4' }} colorways</span>
+          <span>PP-MINI · 2026</span>
+        </div>
+      </div>
+
+      <!-- Buy info -->
+      <div class="pp-buy-info" data-pp-reveal>
+        <div class="pp-buy-rating">
+          <span class="pp-stars">
+            {%- for i in (1..5) -%}
+              <svg viewBox="0 0 16 16"><path d="M8 0l2 5 5 .5-4 3.5 1 5L8 11.5 4 14l1-5L1 5.5 6 5z"/></svg>
+            {%- endfor -%}
+          </span>
+          <span>{{ section.settings.rating_text | default: '4.9 · 5,247 reviews' }}</span>
+        </div>
+
+        <h2 class="pp-buy-h1">
+          {{ current_product.title | split: ' ' | first }}
+          <span class="pp-ital">{{ current_product.title | split: ' ' | last }}</span>
+        </h2>
+        <p class="pp-buy-tagline">{{ current_product.description | strip_html | truncate: 180 }}</p>
+
+        <div class="pp-buy-price-row">
+          <span class="pp-buy-price" id="pp-disp-price">
+            <span>{{ first_variant.price | money_without_trailing_zeros }}</span>
+          </span>
+          {%- if first_variant.compare_at_price > first_variant.price -%}
+            <span class="pp-buy-price-old">{{ first_variant.compare_at_price | money_without_trailing_zeros }}</span>
+            <span class="pp-buy-discount">–{{ first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price | round }}% Today</span>
+          {%- endif -%}
+        </div>
+        <div class="pp-buy-shipping">
+          <strong>{{ section.settings.shipping_label | default: 'Free express shipping' }}</strong> · {{ section.settings.shipping_sub | default: 'Delivers in 3–5 business days' }}
+        </div>
+
+        {%- assign has_color_option = false -%}
+        {%- assign has_bundle_option = false -%}
+        {%- for option in current_product.options_with_values -%}
+          {%- if option.name == 'Color' -%}{%- assign has_color_option = true -%}{%- assign color_option = option -%}{%- endif -%}
+          {%- if option.name == 'Bundle' -%}{%- assign has_bundle_option = true -%}{%- assign bundle_option = option -%}{%- endif -%}
+        {%- endfor -%}
+
+        <!-- Color Picker -->
+        {%- if has_color_option -%}
+        <div class="pp-var-block">
+          <div class="pp-var-label">
+            <strong>Color</strong>
+            <span class="pp-selected" id="pp-sel-color">{{ color_option.selected_value }}</span>
+          </div>
+          <div class="pp-color-row">
+            {%- for value in color_option.values -%}
+              {%- assign swatch_class = 'pp-swatch--pink' -%}
+              {%- assign hex1 = '#ffd4e0' -%}
+              {%- assign hex2 = '#ff8fb1' -%}
+              {%- if value == 'Mint Green' -%}
+                {%- assign swatch_class = 'pp-swatch--mint' -%}
+                {%- assign hex1 = '#d1f0d8' -%}{%- assign hex2 = '#a3dbb1' -%}
+              {%- elsif value == 'Sky Blue' -%}
+                {%- assign swatch_class = 'pp-swatch--blue' -%}
+                {%- assign hex1 = '#d6e7ff' -%}{%- assign hex2 = '#a3c6f5' -%}
+              {%- elsif value == 'Onyx Black' -%}
+                {%- assign swatch_class = 'pp-swatch--black' -%}
+                {%- assign hex1 = '#3a3a40' -%}{%- assign hex2 = '#0a0a0c' -%}
+              {%- endif -%}
+              <div
+                class="pp-color-pill{% if color_option.selected_value == value %} pp-active{% endif %}"
+                data-color="{{ value }}"
+                data-hex1="{{ hex1 }}"
+                data-hex2="{{ hex2 }}">
+                <span class="pp-swatch {{ swatch_class }}"></span>
+                <span>{{ value }}</span>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}
+
+        <!-- Bundle Picker -->
+        {%- if has_bundle_option -%}
+        <div class="pp-var-block">
+          <div class="pp-var-label">
+            <strong>Bundle</strong>
+            <span class="pp-selected" id="pp-sel-bundle">{{ bundle_option.selected_value }}</span>
+          </div>
+          <div class="pp-bundle-row">
+            {%- for variant in current_product.variants -%}
+              {%- if variant.option1 == current_product.selected_or_first_available_variant.option1 or has_color_option == false -%}
+                {%- assign bundle_val = variant.option2 | default: variant.option1 -%}
+                {%- assign is_active = false -%}
+                {%- if bundle_option.selected_value == bundle_val -%}{%- assign is_active = true -%}{%- endif -%}
+                <div
+                  class="pp-bundle-pill{% if is_active %} pp-active{% endif %}"
+                  data-bundle="{{ bundle_val }}"
+                  data-variant-id="{{ variant.id }}"
+                  data-price="{{ variant.price }}">
+                  {%- if bundle_val == section.settings.popular_bundle -%}
+                    <span class="pp-bundle-tag">Most Popular</span>
+                  {%- endif -%}
+                  <div class="pp-bundle-info">
+                    <span class="pp-bundle-name">{{ variant.title | replace: ' / ', ' · ' }}</span>
+                    <span class="pp-bundle-meta">{{ variant.sku | default: bundle_val }}</span>
+                  </div>
+                  <div class="pp-bundle-price">
+                    <strong>{{ variant.price | money_without_trailing_zeros }}</strong>
+                    {%- if variant.compare_at_price > variant.price -%}
+                      <small>Save {{ variant.compare_at_price | minus: variant.price | money_without_trailing_zeros }}</small>
+                    {%- endif -%}
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+        {%- endif -%}
+
+        <!-- Product form (Shopify cart integration) -->
+        {%- form 'product', current_product, id: 'pp-product-form', novalidate: 'novalidate' -%}
+          <input type="hidden" name="id" id="pp-variant-id" value="{{ first_variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button
+            type="submit"
+            id="pp-add-to-cart"
+            class="pp-add-to-cart"
+            {%- unless first_variant.available -%} disabled{%- endunless -%}>
+            <span>
+              {%- if first_variant.available -%}
+                {{ section.settings.atc_label | default: 'Add to Cart' }}
+              {%- else -%}
+                Sold Out
+              {%- endif -%}
+            </span>
+            <span class="pp-add-to-cart-price" id="pp-cta-price">{{ first_variant.price | money_without_trailing_zeros }}</span>
+            <span style="font-size:14px">→</span>
+          </button>
+        {%- endform -%}
+
+        <div class="pp-buy-trust-row">
+          <div class="pp-buy-trust">
+            <svg viewBox="0 0 24 24"><path d="M12 2L4 6v6c0 5 3.4 9.5 8 10 4.6-.5 8-5 8-10V6l-8-4z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4"/></svg>
+            <span class="pp-buy-trust-name">30-Day</span>
+            <span class="pp-buy-trust-sub">Risk-free trial</span>
+          </div>
+          <div class="pp-buy-trust">
+            <svg viewBox="0 0 24 24"><path d="M3 7h18l-2 11H5L3 7z"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
+            <span class="pp-buy-trust-name">Free Express</span>
+            <span class="pp-buy-trust-sub">Worldwide shipping</span>
+          </div>
+          <div class="pp-buy-trust">
+            <svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 12h14"/><circle cx="12" cy="12" r="10"/></svg>
+            <span class="pp-buy-trust-name">2-Year</span>
+            <span class="pp-buy-trust-sub">Premium warranty</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Cart Drawer & Overlay -->
+<div class="pp-cart-overlay" id="pp-cart-overlay"></div>
+<aside class="pp-cart-drawer" id="pp-cart-drawer">
+  <div class="pp-cart-head">
+    <strong>Your Cart</strong>
+    <div class="pp-cart-close" id="pp-cart-close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+    </div>
+  </div>
+  <div class="pp-cart-body" id="pp-cart-body">
+    <div class="pp-cart-empty">
+      <p>Your cart is light as a PocketPrint.</p>
+      <p>Add one and feel the difference.</p>
+    </div>
+  </div>
+  <div class="pp-cart-foot" id="pp-cart-foot">
+    <div class="pp-cart-total"><span>Total</span><span id="pp-cart-total">{{ cart.total_price | money }}</span></div>
+    <button class="pp-cart-checkout" id="pp-cart-checkout">Checkout · Free Shipping</button>
+  </div>
+</aside>
+
+<script src="{{ 'pocketprint.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "PocketPrint — Product Buy",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section anchor ID",
+      "default": "product"
+    },
+    {
+      "type": "text",
+      "id": "rating_text",
+      "label": "Rating text",
+      "default": "4.9 · 5,247 reviews"
+    },
+    {
+      "type": "text",
+      "id": "shipping_label",
+      "label": "Shipping label",
+      "default": "Free express shipping"
+    },
+    {
+      "type": "text",
+      "id": "shipping_sub",
+      "label": "Shipping sub-text",
+      "default": "Delivers in 3–5 business days"
+    },
+    {
+      "type": "text",
+      "id": "atc_label",
+      "label": "Add to cart button label",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "text",
+      "id": "popular_bundle",
+      "label": "Most Popular bundle name",
+      "default": "Starter Kit"
+    },
+    {
+      "type": "text",
+      "id": "colorway_count",
+      "label": "Colorway count (display only)",
+      "default": "4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Product Buy"
+    }
+  ]
+}
+{% endschema %}

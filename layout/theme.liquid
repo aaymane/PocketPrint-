@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4f1ec">
+
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+
+  <title>
+    {%- if request.page_type == 'index' -%}
+      {{ page_title }} — {{ shop.name }}
+    {%- else -%}
+      {{ page_title }}{% if current_tags %} – {{ current_tags | join: ', ' }}{% endif %}
+      {%- if current_page != 1 %} – {{ 'general.meta.page' | t: page: current_page }}{%- endif -%}
+    {%- endif -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  {{ content_for_header }}
+
+  <!-- PocketPrint global styles -->
+  {{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+  <noscript><style>[data-pp-reveal]{opacity:1!important;transform:none!important}</style></noscript>
+</head>
+
+<body class="pp-page pp-grain">
+
+  <!-- Dawn-compatible header area -->
+  <div id="shopify-section-header">
+    <!-- PocketPrint styled navigation -->
+    <nav class="pp-nav" style="
+      position:sticky;top:0;z-index:90;
+      backdrop-filter:blur(20px) saturate(180%);
+      -webkit-backdrop-filter:blur(20px) saturate(180%);
+      background:rgba(244,241,236,.72);
+      border-bottom:1px solid rgba(10,10,12,.08);
+      font-family:'Geist',-apple-system,sans-serif;
+    ">
+      <div style="max-width:1440px;margin:0 auto;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;">
+        <a href="{{ routes.root_url }}" style="display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-0.02em;font-size:18px;color:inherit;text-decoration:none;">
+          <span style="width:28px;height:28px;border-radius:8px;background:#0a0a0c;color:#ff8fb1;display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:16px;">P</span>
+          <span>pocketprint<sup style="font-size:9px;vertical-align:super;opacity:.5;margin-left:2px;">®</sup></span>
+        </a>
+        <div style="display:flex;gap:32px;font-size:13px;" class="pp-nav-links">
+          <a href="#product" style="opacity:.65;transition:opacity .2s;color:inherit;text-decoration:none;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.65">Product</a>
+          <a href="#how" style="opacity:.65;transition:opacity .2s;color:inherit;text-decoration:none;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.65">How It Works</a>
+          <a href="#reviews" style="opacity:.65;transition:opacity .2s;color:inherit;text-decoration:none;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.65">Reviews</a>
+          <a href="#specs" style="opacity:.65;transition:opacity .2s;color:inherit;text-decoration:none;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.65">Specs</a>
+          <a href="#faq" style="opacity:.65;transition:opacity .2s;color:inherit;text-decoration:none;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=.65">FAQ</a>
+        </div>
+        <div style="display:flex;align-items:center;gap:18px;font-size:13px;">
+          <button
+            data-pp-cart-toggle
+            style="display:flex;align-items:center;gap:8px;padding:9px 16px;border-radius:100px;background:#0a0a0c;color:#f4f1ec;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border:none;transition:transform .2s,background .2s;"
+            onmouseover="this.style.transform='scale(1.02)'"
+            onmouseout="this.style.transform=''">
+            <span style="width:6px;height:6px;background:#ff8fb1;border-radius:50%;"></span>
+            Cart <span id="pp-cart-count">· 0</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <style>@media(max-width:768px){.pp-nav-links{display:none!important}}</style>
+  </div>
+
+  <main id="MainContent" class="content-for-layout" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  <!-- PocketPrint Footer -->
+  <footer style="background:#0a0a0c;color:#f4f1ec;padding:80px 0 40px;border-top:1px solid rgba(255,255,255,.08);font-family:'Geist',-apple-system,sans-serif;">
+    <div style="max-width:1280px;margin:0 auto;padding:0 32px;">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:60px;border-bottom:1px solid rgba(255,255,255,.08);">
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <a href="{{ routes.root_url }}" style="display:flex;align-items:center;gap:10px;font-weight:600;letter-spacing:-0.02em;font-size:18px;color:#f4f1ec;text-decoration:none;">
+            <span style="width:28px;height:28px;border-radius:8px;background:#ff8fb1;color:#0a0a0c;display:grid;place-items:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:16px;">P</span>
+            <span>pocketprint<sup style="font-size:9px;vertical-align:super;opacity:.5;margin-left:2px;">®</sup></span>
+          </a>
+          <p style="font-size:13px;color:rgba(244,241,236,.5);max-width:280px;line-height:1.55;">Designed for ideas in motion. PocketPrint Mini is a portable thermal printer made for the things you'd otherwise scroll past.</p>
+        </div>
+        <div>
+          <h4 style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(244,241,236,.5);margin-bottom:18px;">Product</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;padding:0;margin:0;">
+            <li><a href="{{ routes.collections_url }}" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">PocketPrint Mini</a></li>
+            <li><a href="{{ routes.collections_url }}" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Thermal Rolls</a></li>
+            <li><a href="{{ routes.collections_url }}" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Accessories</a></li>
+            <li><a href="{{ routes.collections_url }}" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Bundles</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(244,241,236,.5);margin-bottom:18px;">Support</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;padding:0;margin:0;">
+            {%- for link in linklists.footer.links -%}
+              <li><a href="{{ link.url }}" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">{{ link.title }}</a></li>
+            {%- else -%}
+              <li><a href="/pages/help" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Help Center</a></li>
+              <li><a href="/policies/shipping-policy" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Shipping</a></li>
+              <li><a href="/policies/refund-policy" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Returns · 30 day</a></li>
+              <li><a href="/pages/warranty" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Warranty · 2 yr</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+        <div>
+          <h4 style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(244,241,236,.5);margin-bottom:18px;">Company</h4>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;padding:0;margin:0;">
+            <li><a href="/pages/about" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">About</a></li>
+            <li><a href="/pages/press" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Press</a></li>
+            <li><a href="/pages/sustainability" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Sustainability</a></li>
+            <li><a href="/pages/contact" style="font-size:13px;color:rgba(244,241,236,.7);text-decoration:none;">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:30px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(244,241,236,.5);">
+        <span>© {{ 'now' | date: '%Y' }} PocketPrint Industries · All rights reserved</span>
+        <div style="display:flex;gap:8px;align-items:center;">
+          {%- for type in shop.enabled_payment_types -%}
+            {{ type | payment_type_svg_tag: class: 'icon icon--payment' }}
+          {%- else -%}
+            <span style="padding:4px 10px;background:#2a2a30;border-radius:6px;font-weight:500;color:rgba(244,241,236,.7);">VISA</span>
+            <span style="padding:4px 10px;background:#2a2a30;border-radius:6px;font-weight:500;color:rgba(244,241,236,.7);">MC</span>
+            <span style="padding:4px 10px;background:#2a2a30;border-radius:6px;font-weight:500;color:rgba(244,241,236,.7);">AMEX</span>
+            <span style="padding:4px 10px;background:#2a2a30;border-radius:6px;font-weight:500;color:rgba(244,241,236,.7);">APPLE PAY</span>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ 'pocketprint.js' | asset_url }}" defer></script>
+</body>
+</html>

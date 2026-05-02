@@ -1,0 +1,113 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-compare pp-page">
+  <div class="pp-container">
+    <div data-pp-reveal>
+      <div class="pp-eyebrow">{{ section.settings.eyebrow }}</div>
+      <h2 class="pp-section-title">{{ section.settings.title | replace: '[i]', '<span class="pp-ital">' | replace: '[/i]', '</span>' }}</h2>
+    </div>
+
+    <div class="pp-compare-table" data-pp-reveal>
+      <div class="pp-compare-row pp-head">
+        <div class="pp-compare-cell">Feature</div>
+        <div class="pp-compare-cell pp-brand">{{ section.settings.brand_col_label | default: 'PocketPrint Mini' }}</div>
+        <div class="pp-compare-cell">{{ section.settings.other_col_label | default: 'Other Mini Printers' }}</div>
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'comparison_row' -%}
+          <div class="pp-compare-row" {{ block.shopify_attributes }}>
+            <div class="pp-compare-cell pp-label">{{ block.settings.feature }}</div>
+            <div class="pp-compare-cell pp-brand-col">
+              {%- if block.settings.brand_has -%}
+                <svg class="pp-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l5 5 9-12"/></svg>
+              {%- else -%}
+                <svg class="pp-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+              {%- endif -%}
+            </div>
+            <div class="pp-compare-cell">
+              {%- if block.settings.other_has -%}
+                <svg class="pp-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l5 5 9-12"/></svg>
+              {%- else -%}
+                <svg class="pp-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PocketPrint — Comparison",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "06 · Why PocketPrint"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (use [i]...[/i] for italic)",
+      "default": "No comparison, [i]honestly.[/i]"
+    },
+    {
+      "type": "text",
+      "id": "brand_col_label",
+      "label": "Brand column label",
+      "default": "PocketPrint Mini"
+    },
+    {
+      "type": "text",
+      "id": "other_col_label",
+      "label": "Other column label",
+      "default": "Other Mini Printers"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison_row",
+      "name": "Comparison Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature",
+          "label": "Feature",
+          "default": "Pocket-sized form factor"
+        },
+        {
+          "type": "checkbox",
+          "id": "brand_has",
+          "label": "PocketPrint has this",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "other_has",
+          "label": "Competitors have this",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Comparison",
+      "blocks": [
+        { "type": "comparison_row", "settings": { "feature": "Pocket-sized form factor", "brand_has": true, "other_has": true } },
+        { "type": "comparison_row", "settings": { "feature": "Premium build (aluminum + soft-touch)", "brand_has": true, "other_has": false } },
+        { "type": "comparison_row", "settings": { "feature": "200 prints per charge", "brand_has": true, "other_has": false } },
+        { "type": "comparison_row", "settings": { "feature": "USB-C charging", "brand_has": true, "other_has": false } },
+        { "type": "comparison_row", "settings": { "feature": "Native iOS + Android app", "brand_has": true, "other_has": true } },
+        { "type": "comparison_row", "settings": { "feature": "2-year warranty", "brand_has": true, "other_has": false } },
+        { "type": "comparison_row", "settings": { "feature": "30-day risk-free trial", "brand_has": true, "other_has": false } }
+      ]
+    }
+  ]
+}
+{% endschema %}

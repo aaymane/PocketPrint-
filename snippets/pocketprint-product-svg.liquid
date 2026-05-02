@@ -1,0 +1,70 @@
+{%- comment -%}
+  Renders the PocketPrint product SVG illustration.
+  Accepts:
+    - svg_id: string — unique ID for the SVG gradients (required when multiple instances on page)
+    - dark: boolean — use dark (Onyx Black) colorway
+{%- endcomment -%}
+
+{%- assign svg_id = svg_id | default: 'pp-svg' -%}
+{%- assign grad_body = svg_id | append: '-bodyGrad' -%}
+{%- assign grad_center = svg_id | append: '-centerGrad' -%}
+
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="{{ svg_id }}" class="pp-product-svg">
+  <defs>
+    <linearGradient id="{{ grad_body }}" x1="0%" y1="0%" x2="100%" y2="100%">
+      {%- if dark -%}
+        <stop offset="0%" stop-color="#3a3a40"/>
+        <stop offset="100%" stop-color="#0a0a0c"/>
+      {%- else -%}
+        <stop offset="0%" stop-color="#ffd4e0"/>
+        <stop offset="50%" stop-color="#ffb8cc"/>
+        <stop offset="100%" stop-color="#ff8fb1"/>
+      {%- endif -%}
+    </linearGradient>
+    <linearGradient id="{{ grad_center }}" x1="0%" y1="0%" x2="100%" y2="100%">
+      {%- if dark -%}
+        <stop offset="0%" stop-color="#2a2a30"/>
+        <stop offset="100%" stop-color="#0a0a0c"/>
+      {%- else -%}
+        <stop offset="0%" stop-color="#ffc8d8"/>
+        <stop offset="100%" stop-color="#ff9abb"/>
+      {%- endif -%}
+    </linearGradient>
+    <radialGradient id="{{ svg_id }}-hl" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="rgba(255,255,255,.6)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+    </radialGradient>
+    <filter id="{{ svg_id }}-shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+      <feOffset dx="0" dy="6" result="offsetblur"/>
+      <feFlood flood-color="#e85a85" flood-opacity=".3"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Printer body -->
+  <rect x="60" y="60" width="280" height="280" rx="40" fill="url(#{{ grad_body }})" filter="url(#{{ svg_id }}-shadow)"/>
+  <!-- Side button -->
+  <rect x="338" y="180" width="6" height="40" rx="3" fill="{%- if dark -%}#ff8fb1{%- else -%}#e85a85{%- endif -%}" opacity=".6"/>
+  <!-- Specular highlight -->
+  <rect x="60" y="60" width="280" height="280" rx="40" fill="url(#{{ svg_id }}-hl)"/>
+
+  <!-- Outer ring -->
+  <circle cx="200" cy="200" r="115" fill="{%- if dark -%}#1a1a20{%- else -%}url(#{{ svg_id }}-hl){%- endif -%}"/>
+  <!-- Inner circle -->
+  <circle cx="200" cy="200" r="92" fill="url(#{{ grad_center }})"/>
+
+  <!-- Cat ears -->
+  <path d="M 165 115 Q 165 100, 178 100 Q 188 100, 188 118 Z" fill="url(#{{ grad_center }})"/>
+  <path d="M 235 115 Q 235 100, 222 100 Q 212 100, 212 118 Z" fill="url(#{{ grad_center }})"/>
+
+  <!-- Cat icon -->
+  <g transform="translate(200,210)">
+    <circle cx="0" cy="-4" r="6" fill="{%- if dark -%}#ff8fb1{%- else -%}#fff{%- endif -%}" opacity=".9"/>
+    <path d="M 0 -2 L 0 6 M 0 6 L -8 14 M 0 6 L 8 14" stroke="{%- if dark -%}#ff8fb1{%- else -%}#fff{%- endif -%}" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8"/>
+  </g>
+
+  <!-- Inner ring highlight -->
+  <circle cx="200" cy="200" r="92" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+</svg>

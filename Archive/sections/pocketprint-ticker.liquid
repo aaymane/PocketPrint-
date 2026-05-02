@@ -1,0 +1,66 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<div class="pp-ticker">
+  <div class="pp-ticker-track">
+    {%- for i in (1..2) -%}
+      <span class="pp-ticker-item">
+        {{ section.settings.word_1 }} <em class="pp-ital">{{ section.settings.word_1_alt }}</em>
+        <span class="pp-ticker-dot"></span>
+        {{ section.settings.word_2 }} <em class="pp-ital">{{ section.settings.word_2_alt }}</em>
+        <span class="pp-ticker-dot"></span>
+        {{ section.settings.word_3 }} <em class="pp-ital">{{ section.settings.word_3_alt }}</em>
+        <span class="pp-ticker-dot"></span>
+      </span>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PocketPrint — Brand Ticker",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "word_1",
+      "label": "Word 1",
+      "default": "Print"
+    },
+    {
+      "type": "text",
+      "id": "word_1_alt",
+      "label": "Word 1 italic",
+      "default": "Anything"
+    },
+    {
+      "type": "text",
+      "id": "word_2",
+      "label": "Word 2",
+      "default": "Pocket"
+    },
+    {
+      "type": "text",
+      "id": "word_2_alt",
+      "label": "Word 2 italic",
+      "default": "Sized"
+    },
+    {
+      "type": "text",
+      "id": "word_3",
+      "label": "Word 3",
+      "default": "Wireless"
+    },
+    {
+      "type": "text",
+      "id": "word_3_alt",
+      "label": "Word 3 italic",
+      "default": "Always"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Brand Ticker"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,68 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-manifesto pp-page">
+  <div class="pp-container">
+    <div class="pp-manifesto-grid">
+      <div class="pp-manifesto-side" data-pp-reveal>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'meta_row' -%}
+            <div class="pp-manifesto-side-row">
+              <span>{{ block.settings.label }}</span>
+              <span>{{ block.settings.value }}</span>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="pp-manifesto-text" data-pp-reveal>
+        {{ section.settings.body }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PocketPrint — Manifesto",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Manifesto body",
+      "default": "<p>We live in <em>infinite scroll</em>. Every photo, idea, and memory — trapped behind a screen.</p><p><strong>PocketPrint changes that.</strong> A printer that fits in your hand. Connects in seconds. And brings the things you love back into the physical world — <em>where they belong.</em></p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "meta_row",
+      "name": "Meta Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Year"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "2026"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Manifesto",
+      "blocks": [
+        { "type": "meta_row", "settings": { "label": "Section", "value": "01 / Manifesto" } },
+        { "type": "meta_row", "settings": { "label": "Year", "value": "2026" } },
+        { "type": "meta_row", "settings": { "label": "Origin", "value": "Designed worldwide" } },
+        { "type": "meta_row", "settings": { "label": "Concept", "value": "Tangible memory" } },
+        { "type": "meta_row", "settings": { "label": "Printing", "value": "Inkless thermal" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

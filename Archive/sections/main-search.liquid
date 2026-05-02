@@ -1,0 +1,185 @@
+<div style="
+  min-height:60vh;
+  padding:80px 32px 120px;
+  font-family:'Geist',-apple-system,sans-serif;
+  background:#f4f1ec;
+  color:#0a0a0c;
+">
+  <div style="max-width:860px;margin:0 auto;">
+
+    <h1 style="
+      font-size:clamp(32px,5vw,56px);
+      font-weight:600;
+      letter-spacing:-0.03em;
+      line-height:1.1;
+      margin:0 0 40px;
+    ">Search</h1>
+
+    <form action="{{ routes.search_url }}" method="get" style="
+      display:flex;
+      gap:12px;
+      margin-bottom:64px;
+    ">
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Search..."
+        autocomplete="off"
+        style="
+          flex:1;
+          padding:14px 20px;
+          border:1.5px solid rgba(10,10,12,.2);
+          border-radius:12px;
+          font-family:'Geist',-apple-system,sans-serif;
+          font-size:15px;
+          background:#fff;
+          color:#0a0a0c;
+          outline:none;
+          transition:border-color .2s;
+        "
+        onfocus="this.style.borderColor='#ff8fb1'"
+        onblur="this.style.borderColor='rgba(10,10,12,.2)'"
+      >
+      <button
+        type="submit"
+        style="
+          padding:14px 28px;
+          border-radius:12px;
+          background:#0a0a0c;
+          color:#f4f1ec;
+          font-family:'JetBrains Mono',monospace;
+          font-size:11px;
+          letter-spacing:.1em;
+          text-transform:uppercase;
+          border:none;
+          cursor:pointer;
+          white-space:nowrap;
+          transition:background .2s,transform .15s;
+        "
+        onmouseover="this.style.background='#1a1a1e';this.style.transform='scale(1.02)'"
+        onmouseout="this.style.background='#0a0a0c';this.style.transform=''"
+      >Search</button>
+    </form>
+
+    {% if search.performed %}
+
+      {% if search.results_count > 0 %}
+
+        <p style="
+          font-family:'JetBrains Mono',monospace;
+          font-size:11px;
+          letter-spacing:.12em;
+          text-transform:uppercase;
+          color:rgba(10,10,12,.45);
+          margin-bottom:40px;
+        ">{{ search.results_count }} result{% if search.results_count != 1 %}s{% endif %} for "{{ search.terms | escape }}"</p>
+
+        <div style="display:grid;gap:32px;">
+
+          {% for item in search.results %}
+
+            <a
+              href="{{ item.url }}"
+              style="
+                display:flex;
+                gap:24px;
+                align-items:flex-start;
+                padding:28px;
+                border:1.5px solid rgba(10,10,12,.1);
+                border-radius:16px;
+                background:#fff;
+                text-decoration:none;
+                color:inherit;
+                transition:border-color .2s,box-shadow .2s;
+              "
+              onmouseover="this.style.borderColor='#ff8fb1';this.style.boxShadow='0 4px 24px rgba(255,143,177,.12)'"
+              onmouseout="this.style.borderColor='rgba(10,10,12,.1)';this.style.boxShadow=''"
+            >
+
+              {% if item.featured_image %}
+                <img
+                  src="{{ item.featured_image | image_url: width: 500 }}"
+                  alt="{{ item.featured_image.alt | escape }}"
+                  width="120"
+                  height="120"
+                  style="
+                    width:120px;
+                    height:120px;
+                    object-fit:cover;
+                    border-radius:10px;
+                    flex-shrink:0;
+                    background:rgba(10,10,12,.04);
+                  "
+                  loading="lazy"
+                >
+              {% endif %}
+
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0;">
+                <span style="
+                  font-family:'JetBrains Mono',monospace;
+                  font-size:10px;
+                  letter-spacing:.12em;
+                  text-transform:uppercase;
+                  color:rgba(10,10,12,.4);
+                ">{{ item.object_type }}</span>
+
+                <h3 style="
+                  font-size:18px;
+                  font-weight:600;
+                  letter-spacing:-0.02em;
+                  margin:0;
+                  line-height:1.25;
+                ">{{ item.title }}</h3>
+
+                {% if item.price %}
+                  <span style="
+                    font-family:'JetBrains Mono',monospace;
+                    font-size:13px;
+                    color:#0a0a0c;
+                    letter-spacing:.02em;
+                  ">{{ item.price | money }}</span>
+                {% endif %}
+              </div>
+
+            </a>
+
+          {% endfor %}
+
+        </div>
+
+      {% else %}
+
+        <div style="
+          padding:64px 0;
+          text-align:center;
+          border:1.5px dashed rgba(10,10,12,.15);
+          border-radius:20px;
+        ">
+          <p style="font-size:17px;color:rgba(10,10,12,.55);margin:0 0 8px;">No results found for</p>
+          <p style="font-size:22px;font-weight:600;letter-spacing:-0.02em;margin:0 0 28px;">"{{ search.terms | escape }}"</p>
+          <a
+            href="{{ routes.root_url }}"
+            style="
+              display:inline-flex;
+              align-items:center;
+              gap:8px;
+              padding:11px 24px;
+              border-radius:100px;
+              background:#0a0a0c;
+              color:#f4f1ec;
+              font-family:'JetBrains Mono',monospace;
+              font-size:11px;
+              letter-spacing:.1em;
+              text-transform:uppercase;
+              text-decoration:none;
+            "
+          >Back to home</a>
+        </div>
+
+      {% endif %}
+
+    {% endif %}
+
+  </div>
+</div>

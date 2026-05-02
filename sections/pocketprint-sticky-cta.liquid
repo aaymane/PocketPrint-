@@ -1,0 +1,59 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+{%- assign current_product = section.settings.product | default: product -%}
+{%- assign first_variant = current_product.selected_or_first_available_variant -%}
+
+<div class="pp-sticky-cta pp-page" id="pp-sticky-cta">
+  <div class="pp-sticky-inner">
+    <div class="pp-sticky-img">
+      <svg viewBox="0 0 40 40" style="width:30px;height:30px">
+        <circle cx="20" cy="20" r="14" fill="white" opacity=".7"/>
+        <circle cx="20" cy="20" r="9" fill="#e85a85"/>
+      </svg>
+    </div>
+    <div class="pp-sticky-info">
+      <div class="pp-sticky-name">{{ current_product.title | default: section.settings.product_name }}</div>
+      <div class="pp-sticky-price" id="pp-sticky-price">
+        {{ first_variant.price | money_without_trailing_zeros | default: section.settings.price_display }} · Free shipping
+      </div>
+    </div>
+    <button class="pp-btn pp-btn-primary" id="pp-sticky-atc">{{ section.settings.button_label | default: 'Add' }}</button>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "PocketPrint — Sticky CTA",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "product_name",
+      "label": "Product name (fallback)",
+      "default": "PocketPrint Mini"
+    },
+    {
+      "type": "text",
+      "id": "price_display",
+      "label": "Price display (fallback)",
+      "default": "€39.90"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Add"
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Sticky CTA"
+    }
+  ]
+}
+{% endschema %}

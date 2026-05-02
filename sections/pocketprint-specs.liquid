@@ -1,0 +1,112 @@
+{{ 'pocketprint.css' | asset_url | stylesheet_tag }}
+
+<section class="pp-specs pp-page" id="{{ section.settings.section_id }}">
+  <div class="pp-container">
+    <div class="pp-specs-grid">
+      <div data-pp-reveal>
+        <div class="pp-eyebrow">{{ section.settings.eyebrow }}</div>
+        <h2 class="pp-section-title">{{ section.settings.title | replace: '[i]', '<span class="pp-ital">' | replace: '[/i]', '</span>' }}</h2>
+        <p class="pp-specs-text">{{ section.settings.description }}</p>
+
+        <div class="pp-spec-list">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'spec_row' -%}
+              <div class="pp-spec-row" {{ block.shopify_attributes }}>
+                <span>{{ block.settings.label }}</span>
+                <span>{{ block.settings.value }}</span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="pp-specs-visual" data-pp-reveal>
+        <div class="pp-annotation pp-ann-1">{{ section.settings.annotation_1 }}</div>
+        <div class="pp-annotation pp-ann-2">{{ section.settings.annotation_2 }}</div>
+        <div class="pp-specs-product">
+          {%- render 'pocketprint-product-svg', svg_id: 'pp-specs-svg', dark: true -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PocketPrint — Specs",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_id",
+      "label": "Section anchor ID",
+      "default": "specs"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "05 · Inside"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title (use [i]...[/i] for italic)",
+      "default": "Built like an [i]heirloom.[/i]"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Every spec was chosen to feel premium in a way most printers don't bother with. Aluminum body. Soft-touch finish. Magnetic cover. The details show up in the hand."
+    },
+    {
+      "type": "text",
+      "id": "annotation_1",
+      "label": "Annotation 1",
+      "default": "Magnetic Cover"
+    },
+    {
+      "type": "text",
+      "id": "annotation_2",
+      "label": "Annotation 2",
+      "default": "USB-C Port"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "spec_row",
+      "name": "Spec Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Connection"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "Bluetooth 5.0 LE"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PocketPrint — Specs",
+      "blocks": [
+        { "type": "spec_row", "settings": { "label": "Print resolution", "value": "203 DPI · Thermal" } },
+        { "type": "spec_row", "settings": { "label": "Connection", "value": "Bluetooth 5.0 LE" } },
+        { "type": "spec_row", "settings": { "label": "Battery life", "value": "200 prints / charge" } },
+        { "type": "spec_row", "settings": { "label": "Charging", "value": "USB-C · 90 min" } },
+        { "type": "spec_row", "settings": { "label": "Paper width", "value": "57mm thermal roll" } },
+        { "type": "spec_row", "settings": { "label": "Dimensions", "value": "87 × 84 × 45 mm" } },
+        { "type": "spec_row", "settings": { "label": "Weight", "value": "180 g" } },
+        { "type": "spec_row", "settings": { "label": "Compatibility", "value": "iOS 14+ · Android 9+" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
