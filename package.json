@@ -1,0 +1,30 @@
+{
+  "name": "pocketprint-store",
+  "version": "1.0.0",
+  "description": "Ultra-premium one-product Shopify-style landing page for PocketPrint® — the portable wireless thermal printer.",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "python3 -m http.server 8000",
+    "deploy:vercel": "vercel deploy --prod",
+    "deploy:netlify": "netlify deploy --prod --dir=."
+  },
+  "keywords": [
+    "shopify",
+    "ecommerce",
+    "landing-page",
+    "one-product-store",
+    "thermal-printer",
+    "premium",
+    "dtc"
+  ],
+  "author": "PocketPrint Industries",
+  "license": "UNLICENSED",
+  "private": true,
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Safari versions",
+    "last 2 Firefox versions",
+    "last 2 Edge versions"
+  ]
+}
