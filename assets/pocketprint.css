@@ -27,7 +27,7 @@
 .pp-page { font-family: 'Geist', -apple-system, sans-serif; background: var(--pp-bone); color: var(--pp-ink); overflow-x: hidden; font-feature-settings: 'ss01','cv11'; line-height: 1.4; -webkit-font-smoothing: antialiased; }
 .pp-page img { max-width: 100%; display: block; }
 .pp-page a { color: inherit; text-decoration: none; }
-.pp-page button { font: inherit; border: none; background: none; cursor: pointer; color: inherit; }
+.pp-page button { font: inherit; border: none; background: none; cursor: pointer; }
 .pp-page ::selection { background: var(--pp-ink); color: var(--pp-blush); }
 .pp-mono { font-family: 'JetBrains Mono', monospace; font-weight: 400; letter-spacing: -0.01em; }
 .pp-serif { font-family: 'Instrument Serif', serif; font-weight: 400; }
@@ -70,10 +70,10 @@
   transition: all .35s var(--pp-ease);
   position: relative; overflow: hidden; cursor: pointer;
 }
-.pp-btn-primary { background: var(--pp-ink); color: var(--pp-bone); box-shadow: var(--pp-shadow-1); border: none; }
-.pp-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -10px rgba(10,10,12,.4); }
-.pp-btn-primary::after { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent); transition: left .6s var(--pp-ease); }
-.pp-btn-primary:hover::after { left: 100%; }
+.pp-btn.pp-btn-primary { background: var(--pp-ink); color: var(--pp-bone); box-shadow: var(--pp-shadow-1); border: none; }
+.pp-btn.pp-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -10px rgba(10,10,12,.4); }
+.pp-btn.pp-btn-primary::after { content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent); transition: left .6s var(--pp-ease); }
+.pp-btn.pp-btn-primary:hover::after { left: 100%; }
 .pp-btn-ghost { background: rgba(10,10,12,.04); color: var(--pp-ink); border: 1px solid var(--pp-line); }
 .pp-btn-ghost:hover { background: rgba(10,10,12,.08); }
 .pp-btn-arrow { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; transition: transform .3s var(--pp-ease); }
