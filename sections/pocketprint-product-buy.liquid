@@ -2,23 +2,49 @@
 
 {%- liquid
   assign current_product = section.settings.product | default: product
-  assign first_variant = current_product.selected_or_first_available_variant
+  assign has_product = false
+  if current_product != blank
+    assign has_product = true
+    assign first_variant = current_product.selected_or_first_available_variant
+  endif
+
+  assign has_color_option = false
+  assign has_bundle_option = false
+  if has_product
+    for option in current_product.options_with_values
+      if option.name == 'Color'
+        assign has_color_option = true
+        assign color_option = option
+      endif
+      if option.name == 'Bundle'
+        assign has_bundle_option = true
+        assign bundle_option = option
+      endif
+    endfor
+  endif
 -%}
 
 <script>
+  {%- if has_product -%}
   window.ppVariants = {{ current_product.variants | json }};
-  window.ppMoneyFormat = '{{ shop.currency_symbol }}';
   window.ppSelectedVariantId = {{ first_variant.id | json }};
+  {%- else -%}
+  window.ppVariants = [];
+  window.ppSelectedVariantId = null;
+  {%- endif -%}
+  window.ppCurrencySymbol = '{{ shop.currency_symbol | default: "€" }}';
+  window.ppMoneyFormat = '{{ shop.currency_symbol | default: "€" }}';
+  window.ppAtcLabel = '{{ section.settings.atc_label | default: "Add to Cart" | escape }}';
 </script>
 
-<section class="pp-buy-section pp-page" id="{{ section.settings.section_id }}" data-pp-section>
+<section class="pp-buy-section pp-page" id="{{ section.settings.section_id | default: 'product' }}" data-pp-section>
   <div class="pp-container">
     <div class="pp-buy-grid">
 
       <!-- Product visual -->
       <div class="pp-buy-visual" data-pp-reveal>
         <div class="pp-buy-visual-inner">
-          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="pp-buy-svg">
+          <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" id="pp-buy-svg" aria-hidden="true">
             <defs>
               <linearGradient id="pp-bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stop-color="#ffd4e0"/>
@@ -28,70 +54,118 @@
                 <stop offset="0%" stop-color="#ffc8d8"/>
                 <stop offset="100%" stop-color="#ff9abb"/>
               </linearGradient>
+              <filter id="pp-glow">
+                <feGaussianBlur stdDeviation="8" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
             </defs>
-            <rect x="60" y="60" width="280" height="280" rx="40" fill="url(#pp-bodyGrad)"/>
-            <rect x="338" y="180" width="6" height="40" rx="3" fill="#e85a85" opacity=".6"/>
-            <circle cx="200" cy="200" r="115" fill="rgba(255,255,255,.6)"/>
-            <circle cx="200" cy="200" r="92" fill="url(#pp-centerGrad)"/>
-            <path d="M 165 115 Q 165 100, 178 100 Q 188 100, 188 118 Z" fill="url(#pp-centerGrad)"/>
-            <path d="M 235 115 Q 235 100, 222 100 Q 212 100, 212 118 Z" fill="url(#pp-centerGrad)"/>
-            <g transform="translate(200,210)">
-              <circle cx="0" cy="-4" r="6" fill="#fff" opacity=".7"/>
-              <path d="M 0 -2 L 0 6 M 0 6 L -8 14 M 0 6 L 8 14" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8"/>
+            <!-- Device body -->
+            <rect x="60" y="60" width="280" height="280" rx="44" fill="url(#pp-bodyGrad)"/>
+            <!-- Side button -->
+            <rect x="338" y="178" width="7" height="44" rx="3.5" fill="#e85a85" opacity=".65"/>
+            <!-- Paper slot exit line -->
+            <rect x="90" y="58" width="220" height="4" rx="2" fill="rgba(255,255,255,.35)"/>
+            <!-- Lens ring outer -->
+            <circle cx="200" cy="200" r="118" fill="rgba(255,255,255,.55)"/>
+            <!-- Lens ring inner glow -->
+            <circle cx="200" cy="200" r="95" fill="url(#pp-centerGrad)" filter="url(#pp-glow)"/>
+            <!-- Paper icon -->
+            <g transform="translate(200,200)">
+              <rect x="-18" y="-22" width="36" height="44" rx="4" fill="white" opacity=".9"/>
+              <rect x="-12" y="-14" width="24" height="2.5" rx="1.25" fill="#e85a85" opacity=".6"/>
+              <rect x="-12" y="-8" width="18" height="2" rx="1" fill="#e85a85" opacity=".4"/>
+              <rect x="-12" y="-2" width="20" height="2" rx="1" fill="#e85a85" opacity=".4"/>
+              <rect x="-12" y="4" width="14" height="2" rx="1" fill="#e85a85" opacity=".3"/>
             </g>
+            <!-- Paper coming out top -->
+            <rect x="174" y="42" width="52" height="22" rx="2" fill="white" opacity=".85"/>
+            <rect x="180" y="47" width="40" height="1.5" rx=".75" fill="#e85a85" opacity=".4"/>
+            <rect x="180" y="51" width="32" height="1.5" rx=".75" fill="#e85a85" opacity=".3"/>
+            <rect x="180" y="55" width="28" height="1.5" rx=".75" fill="#e85a85" opacity=".2"/>
           </svg>
         </div>
         <div class="pp-buy-color-strip">
           <span>{{ section.settings.colorway_count | default: '4' }} colorways</span>
-          <span>PP-MINI · 2026</span>
+          <span class="pp-mono">PP-MINI · 2026</span>
         </div>
       </div>
 
       <!-- Buy info -->
       <div class="pp-buy-info" data-pp-reveal>
+
         <div class="pp-buy-rating">
-          <span class="pp-stars">
+          <span class="pp-stars" aria-label="Rated 4.9 out of 5">
             {%- for i in (1..5) -%}
-              <svg viewBox="0 0 16 16"><path d="M8 0l2 5 5 .5-4 3.5 1 5L8 11.5 4 14l1-5L1 5.5 6 5z"/></svg>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0l2 5 5 .5-4 3.5 1 5L8 11.5 4 14l1-5L1 5.5 6 5z"/></svg>
             {%- endfor -%}
           </span>
           <span>{{ section.settings.rating_text | default: '4.9 · 5,247 reviews' }}</span>
         </div>
 
         <h2 class="pp-buy-h1">
-          {{ current_product.title | split: ' ' | first }}
-          <span class="pp-ital">{{ current_product.title | split: ' ' | last }}</span>
+          {%- if has_product -%}
+            {%- assign title_words = current_product.title | split: ' ' -%}
+            {%- if title_words.size > 1 -%}
+              {{ title_words | slice: 0, title_words.size | minus: 1 | join: ' ' }}
+              <span class="pp-ital">{{ title_words | last }}</span>
+            {%- else -%}
+              {{ current_product.title }}
+            {%- endif -%}
+          {%- else -%}
+            PocketPrint <span class="pp-ital">Mini</span>
+          {%- endif -%}
         </h2>
-        <p class="pp-buy-tagline">{{ current_product.description | strip_html | truncate: 180 }}</p>
 
+        <p class="pp-buy-tagline">
+          {%- if has_product and current_product.description != blank -%}
+            {{ current_product.description | strip_html | truncate: 200 }}
+          {%- else -%}
+            {{ section.settings.product_tagline | default: 'The pocket-sized thermal printer that turns your phone into a studio. No ink. No apps. No compromises.' }}
+          {%- endif -%}
+        </p>
+
+        <!-- Price row — IDs allow JS to update all on variant change -->
         <div class="pp-buy-price-row">
           <span class="pp-buy-price" id="pp-disp-price">
-            <span>{{ first_variant.price | money_without_trailing_zeros }}</span>
+            {%- if has_product -%}
+              {{ first_variant.price | money_without_trailing_zeros }}
+            {%- else -%}
+              {{ section.settings.fallback_price | default: '—' }}
+            {%- endif -%}
           </span>
-          {%- if first_variant.compare_at_price > first_variant.price -%}
-            <span class="pp-buy-price-old">{{ first_variant.compare_at_price | money_without_trailing_zeros }}</span>
-            <span class="pp-buy-discount">–{{ first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price | round }}% Today</span>
-          {%- endif -%}
-        </div>
-        <div class="pp-buy-shipping">
-          <strong>{{ section.settings.shipping_label | default: 'Free express shipping' }}</strong> · {{ section.settings.shipping_sub | default: 'Delivers in 3–5 business days' }}
+          <span
+            class="pp-buy-price-old"
+            id="pp-compare-price"
+            {%- unless has_product and first_variant.compare_at_price > first_variant.price -%}
+              style="display:none"
+            {%- endunless -%}>
+            {%- if has_product -%}{{ first_variant.compare_at_price | money_without_trailing_zeros }}{%- endif -%}
+          </span>
+          <span
+            class="pp-buy-discount"
+            id="pp-buy-discount"
+            {%- unless has_product and first_variant.compare_at_price > first_variant.price -%}
+              style="display:none"
+            {%- endunless -%}>
+            {%- if has_product and first_variant.compare_at_price > first_variant.price -%}
+              –{{ first_variant.compare_at_price | minus: first_variant.price | times: 100 | divided_by: first_variant.compare_at_price | round }}%
+            {%- endif -%}
+          </span>
         </div>
 
-        {%- assign has_color_option = false -%}
-        {%- assign has_bundle_option = false -%}
-        {%- for option in current_product.options_with_values -%}
-          {%- if option.name == 'Color' -%}{%- assign has_color_option = true -%}{%- assign color_option = option -%}{%- endif -%}
-          {%- if option.name == 'Bundle' -%}{%- assign has_bundle_option = true -%}{%- assign bundle_option = option -%}{%- endif -%}
-        {%- endfor -%}
+        <div class="pp-buy-shipping">
+          <strong>{{ section.settings.shipping_label | default: 'Free express shipping' }}</strong>
+          <span> · {{ section.settings.shipping_sub | default: 'Delivered in 3–5 days · Tracked & insured' }}</span>
+        </div>
 
         <!-- Color Picker -->
-        {%- if has_color_option -%}
+        {%- if has_product and has_color_option -%}
         <div class="pp-var-block">
           <div class="pp-var-label">
             <strong>Color</strong>
             <span class="pp-selected" id="pp-sel-color">{{ color_option.selected_value }}</span>
           </div>
-          <div class="pp-color-row">
+          <div class="pp-color-row" role="group" aria-label="Select color">
             {%- for value in color_option.values -%}
               {%- assign swatch_class = 'pp-swatch--pink' -%}
               {%- assign hex1 = '#ffd4e0' -%}
@@ -108,10 +182,13 @@
               {%- endif -%}
               <div
                 class="pp-color-pill{% if color_option.selected_value == value %} pp-active{% endif %}"
+                role="button"
+                tabindex="0"
+                aria-pressed="{% if color_option.selected_value == value %}true{% else %}false{% endif %}"
                 data-color="{{ value }}"
                 data-hex1="{{ hex1 }}"
                 data-hex2="{{ hex2 }}">
-                <span class="pp-swatch {{ swatch_class }}"></span>
+                <span class="pp-swatch {{ swatch_class }}" aria-hidden="true"></span>
                 <span>{{ value }}</span>
               </div>
             {%- endfor -%}
@@ -120,29 +197,50 @@
         {%- endif -%}
 
         <!-- Bundle Picker -->
-        {%- if has_bundle_option -%}
+        {%- if has_product and has_bundle_option -%}
         <div class="pp-var-block">
           <div class="pp-var-label">
             <strong>Bundle</strong>
             <span class="pp-selected" id="pp-sel-bundle">{{ bundle_option.selected_value }}</span>
           </div>
-          <div class="pp-bundle-row">
+          <div class="pp-bundle-row" role="group" aria-label="Select bundle">
+            {%- assign bundle_rendered = 0 -%}
             {%- for variant in current_product.variants -%}
-              {%- if variant.option1 == current_product.selected_or_first_available_variant.option1 or has_color_option == false -%}
+              {%- assign show_variant = false -%}
+              {%- if has_color_option == false -%}
+                {%- assign show_variant = true -%}
+              {%- elsif variant.option1 == first_variant.option1 -%}
+                {%- assign show_variant = true -%}
+              {%- endif -%}
+              {%- if show_variant -%}
                 {%- assign bundle_val = variant.option2 | default: variant.option1 -%}
                 {%- assign is_active = false -%}
-                {%- if bundle_option.selected_value == bundle_val -%}{%- assign is_active = true -%}{%- endif -%}
+                {%- if bundle_option.selected_value == bundle_val or bundle_rendered == 0 -%}
+                  {%- assign is_active = true -%}
+                {%- endif -%}
+                {%- assign bundle_rendered = bundle_rendered | plus: 1 -%}
                 <div
                   class="pp-bundle-pill{% if is_active %} pp-active{% endif %}"
+                  role="button"
+                  tabindex="0"
+                  aria-pressed="{% if is_active %}true{% else %}false{% endif %}"
                   data-bundle="{{ bundle_val }}"
                   data-variant-id="{{ variant.id }}"
-                  data-price="{{ variant.price }}">
+                  data-price="{{ variant.price }}"
+                  data-compare-at="{{ variant.compare_at_price | default: 0 }}">
                   {%- if bundle_val == section.settings.popular_bundle -%}
                     <span class="pp-bundle-tag">Most Popular</span>
                   {%- endif -%}
                   <div class="pp-bundle-info">
-                    <span class="pp-bundle-name">{{ variant.title | replace: ' / ', ' · ' }}</span>
-                    <span class="pp-bundle-meta">{{ variant.sku | default: bundle_val }}</span>
+                    <span class="pp-bundle-name">{{ bundle_val }}</span>
+                    <span class="pp-bundle-meta">
+                      {%- case bundle_val -%}
+                        {%- when 'Starter Kit' -%}Printer + 2 rolls of paper
+                        {%- when 'Creator Pack' -%}Printer + 6 rolls + carry case
+                        {%- when 'Studio Bundle' -%}Printer + 12 rolls + case + cable
+                        {%- else -%}{{ variant.sku | default: bundle_val }}
+                      {%- endcase -%}
+                    </span>
                   </div>
                   <div class="pp-bundle-price">
                     <strong>{{ variant.price | money_without_trailing_zeros }}</strong>
@@ -157,67 +255,118 @@
         </div>
         {%- endif -%}
 
-        <!-- Product form (Shopify cart integration) -->
-        {%- form 'product', current_product, id: 'pp-product-form', novalidate: 'novalidate' -%}
-          <input type="hidden" name="id" id="pp-variant-id" value="{{ first_variant.id }}">
-          <input type="hidden" name="quantity" value="1">
-          <button
-            type="submit"
-            id="pp-add-to-cart"
-            class="pp-add-to-cart"
-            {%- unless first_variant.available -%} disabled{%- endunless -%}>
-            <span>
-              {%- if first_variant.available -%}
-                {{ section.settings.atc_label | default: 'Add to Cart' }}
-              {%- else -%}
-                Sold Out
-              {%- endif -%}
-            </span>
-            <span class="pp-add-to-cart-price" id="pp-cta-price">{{ first_variant.price | money_without_trailing_zeros }}</span>
-            <span style="font-size:14px">→</span>
-          </button>
-        {%- endform -%}
+        <!-- Quantity + Add to Cart -->
+        {%- if has_product -%}
+          {%- form 'product', current_product, id: 'pp-product-form', novalidate: 'novalidate' -%}
+            <input type="hidden" name="id" id="pp-variant-id" value="{{ first_variant.id }}">
+            <input type="hidden" name="quantity" id="pp-qty-input" value="1">
 
+            <div class="pp-qty-atc-row">
+              <div class="pp-qty-control" aria-label="Quantity">
+                <button type="button" id="pp-qty-minus" class="pp-qty-btn" aria-label="Decrease quantity">
+                  <svg width="12" height="2" viewBox="0 0 12 2" fill="none"><path d="M1 1h10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                </button>
+                <span id="pp-qty-display" class="pp-qty-val" aria-live="polite">1</span>
+                <button type="button" id="pp-qty-plus" class="pp-qty-btn" aria-label="Increase quantity">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+
+              <button
+                type="submit"
+                id="pp-add-to-cart"
+                class="pp-add-to-cart"
+                {%- unless first_variant.available -%} disabled{%- endunless -%}>
+                <span id="pp-atc-label">
+                  {%- if first_variant.available -%}
+                    {{ section.settings.atc_label | default: 'Add to Cart' }}
+                  {%- else -%}
+                    Sold Out
+                  {%- endif -%}
+                </span>
+                <span class="pp-add-to-cart-price" id="pp-cta-price">{{ first_variant.price | money_without_trailing_zeros }}</span>
+                <span class="pp-atc-arrow" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                </span>
+              </button>
+            </div>
+          {%- endform -%}
+
+        {%- else -%}
+          <div class="pp-no-product-cta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            <p>Select a product in the section settings to enable purchasing.</p>
+          </div>
+        {%- endif -%}
+
+        <!-- Trust signals -->
         <div class="pp-buy-trust-row">
           <div class="pp-buy-trust">
-            <svg viewBox="0 0 24 24"><path d="M12 2L4 6v6c0 5 3.4 9.5 8 10 4.6-.5 8-5 8-10V6l-8-4z" stroke-linejoin="round"/><path d="M9 12l2 2 4-4"/></svg>
-            <span class="pp-buy-trust-name">30-Day</span>
-            <span class="pp-buy-trust-sub">Risk-free trial</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M12 2L4 6v6c0 5.25 3.5 9.74 8 10.5 4.5-.76 8-5.25 8-10.5V6l-8-4z"/>
+              <path d="M9 12l2 2 4-4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="pp-buy-trust-name">30-Day Returns</span>
+            <span class="pp-buy-trust-sub">No questions asked</span>
           </div>
           <div class="pp-buy-trust">
-            <svg viewBox="0 0 24 24"><path d="M3 7h18l-2 11H5L3 7z"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
-            <span class="pp-buy-trust-name">Free Express</span>
-            <span class="pp-buy-trust-sub">Worldwide shipping</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <rect x="2" y="7" width="20" height="14" rx="2"/>
+              <path d="M16 7V5a2 2 0 00-4 0v2M8 7V5a2 2 0 00-4 0v2" stroke-linecap="round"/>
+            </svg>
+            <span class="pp-buy-trust-name">Free Shipping</span>
+            <span class="pp-buy-trust-sub">Worldwide, tracked</span>
           </div>
           <div class="pp-buy-trust">
-            <svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M5 12h14"/><circle cx="12" cy="12" r="10"/></svg>
-            <span class="pp-buy-trust-name">2-Year</span>
-            <span class="pp-buy-trust-sub">Premium warranty</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 6v6l3.5 3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="pp-buy-trust-name">2-Year Warranty</span>
+            <span class="pp-buy-trust-sub">Full hardware coverage</span>
           </div>
         </div>
+
       </div>
     </div>
   </div>
 </section>
 
 <!-- Cart Drawer & Overlay -->
-<div class="pp-cart-overlay" id="pp-cart-overlay"></div>
-<aside class="pp-cart-drawer" id="pp-cart-drawer">
+<div class="pp-cart-overlay" id="pp-cart-overlay" aria-hidden="true"></div>
+<aside class="pp-cart-drawer" id="pp-cart-drawer" role="dialog" aria-label="Shopping cart" aria-modal="true">
   <div class="pp-cart-head">
-    <strong>Your Cart</strong>
-    <div class="pp-cart-close" id="pp-cart-close">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <strong>Your Cart</strong>
+      <span class="pp-cart-badge" id="pp-cart-drawer-count" style="display:none"></span>
     </div>
+    <button class="pp-cart-close" id="pp-cart-close" aria-label="Close cart">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+    </button>
   </div>
   <div class="pp-cart-body" id="pp-cart-body">
     <div class="pp-cart-empty">
-      <p>Your cart is light as a PocketPrint.</p>
-      <p>Add one and feel the difference.</p>
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40">
+        <path d="M14 20h20l-2.5 10H16.5L14 20z" stroke-linejoin="round"/>
+        <path d="M14 20l-2-6H8" stroke-linecap="round"/>
+        <circle cx="18" cy="34" r="2" fill="currentColor" stroke="none"/>
+        <circle cx="30" cy="34" r="2" fill="currentColor" stroke="none"/>
+      </svg>
+      <p>Nothing here yet.</p>
+      <span>Add a PocketPrint to start.</span>
     </div>
   </div>
-  <div class="pp-cart-foot" id="pp-cart-foot">
-    <div class="pp-cart-total"><span>Total</span><span id="pp-cart-total">{{ cart.total_price | money }}</span></div>
-    <button class="pp-cart-checkout" id="pp-cart-checkout">Checkout · Free Shipping</button>
+  <div class="pp-cart-foot" id="pp-cart-foot" style="display:none">
+    <div class="pp-cart-total">
+      <span>Subtotal</span>
+      <span id="pp-cart-total">{{ cart.total_price | money }}</span>
+    </div>
+    <p class="pp-cart-note">Free shipping · Ships within 24h</p>
+    <button class="pp-cart-checkout" id="pp-cart-checkout">Proceed to Checkout →</button>
+    <p class="pp-cart-secure">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+      Secure checkout · SSL encrypted
+    </p>
   </div>
 </aside>
 
@@ -247,6 +396,18 @@
     },
     {
       "type": "text",
+      "id": "product_tagline",
+      "label": "Product tagline (shown when no product is connected)",
+      "default": "The pocket-sized thermal printer that turns your phone into a studio. No ink. No apps. No compromises."
+    },
+    {
+      "type": "text",
+      "id": "fallback_price",
+      "label": "Price display (shown when no product is connected)",
+      "default": "From €39"
+    },
+    {
+      "type": "text",
       "id": "shipping_label",
       "label": "Shipping label",
       "default": "Free express shipping"
@@ -255,7 +416,7 @@
       "type": "text",
       "id": "shipping_sub",
       "label": "Shipping sub-text",
-      "default": "Delivers in 3–5 business days"
+      "default": "Delivered in 3–5 days · Tracked & insured"
     },
     {
       "type": "text",
